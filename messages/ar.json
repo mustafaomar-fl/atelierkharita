@@ -1,0 +1,209 @@
+{
+  "navbar": {
+    "home": "الرئيسية",
+    "bookSession": "احجز موعدًا",
+    "logoAlt": "شعار أتيليه خاريتا"
+  },
+  "meta": {
+    "title": "أتيليه خريطة ملابسك تدوم أطول",
+    "description": "خياطة وتعديلات ملابس في بيفرفايك إصلاحات احترافية للبناطيل والسترات والفساتين والستائر. احجز موعدك عبر الإنترنت."
+  },
+  "footer": {
+    "tagline": "ملابسك تدوم أطول",
+    "phone": "06 44469920",
+    "kvk": "KVK nr. 42073008",
+    "location1": "Bazaar Beverwijk, Hal 25",
+    "location2": "Watermuntstraat 76, 1531 TR Wormer",
+    "hoursNote": "حاليًا مفتوح فقط في عطلة نهاية الأسبوع (السبت والأحد)",
+    "findUsHeading": "أين يمكنك إيجاد محلنا",
+    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d145.35212767923716!2d4.672177435415498!3d52.478225596660856!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2snl!4v1788442440639!5m2!1sen!2snl",
+    "images": [
+      "/images/footer/footer1.jpg",
+      "/images/footer/footer2.jpg",
+      "/images/footer/footer3.jpg"
+    ]
+  },
+  "hero": {
+    "title": "ملابسك تدوم أطول",
+    "bookButton": "احجز موعدًا",
+    "pricesButton": "الخدمات والأسعار تبدأ من",
+    "slides": [
+      {
+        "subtitle": "تعديلات احترافية لكل قطعة ملابس",
+        "beforeImage": "/images/hero/slide1-before.jpg",
+        "afterImage": "/images/hero/slide1-after.jpg"
+      },
+      {
+        "subtitle": "امنح قطعك المفضلة حياة جديدة",
+        "beforeImage": "/images/hero/slide2-before.jpg",
+        "afterImage": "/images/hero/slide2-after.jpg"
+      },
+      {
+        "subtitle": "خياطة دقيقة، بإتقان",
+        "beforeImage": "/images/hero/slide3-before.jpg",
+        "afterImage": "/images/hero/slide3-after.jpg"
+      }
+    ]
+  },
+  "testimonialsTitle": "ماذا يقول عملاؤنا",
+  "testimonials": [
+    {
+      "name": "[أضف اسم عميل حقيقي]",
+      "comment": "[أضف تقييم عميل حقيقي]",
+      "rating": 5,
+      "avatar": "/images/testimonials/avatar1.jpg"
+    },
+    {
+      "name": "[أضف اسم عميل حقيقي]",
+      "comment": "[أضف تقييم عميل حقيقي]",
+      "rating": 5,
+      "avatar": "/images/testimonials/avatar2.jpg"
+    },
+    {
+      "name": "[أضف اسم عميل حقيقي]",
+      "comment": "[أضف تقييم عميل حقيقي]",
+      "rating": 4,
+      "avatar": "/images/testimonials/avatar3.jpg"
+    },
+    {
+      "name": "[أضف اسم عميل حقيقي]",
+      "comment": "[أضف تقييم عميل حقيقي]",
+      "rating": 5,
+      "avatar": "/images/testimonials/avatar4.jpg"
+    }
+  ],
+  "about": {
+    "title": "من نحن",
+    "ownerName": "طارق خريطة",
+    "ownerRole": "المالك وكبير الخياطين",
+    "paragraph": "أتيليه خريطة هو استوديو للخياطة والتعديلات مبني على الحرفية والعناية. سواء كان الأمر يتعلق بتقصير أو تضييق أو إصلاح البناطيل والسترات والفساتين والستائر، فإننا نتعامل مع كل قطعة وكأنها تستحق أن تُحفظ. أحضرها إلينا، ونحن نمنحها حياة جديدة.\n\nبخبرة تمتد 35 عامًا في هذه المهنة، يُعد طارق خريطة حرفيًا بكل ما تحمله الكلمة من معنى. بدأت شغفه بالملابس المُفصّلة على القياس وتصميم الباترون في سوريا، حيث عمل خياطًا من عام 1990 حتى عام 2015: من العمل لدى شركات مختلفة إلى إدارة مشروعه الخاص وورشة خياطة.\n\nمنذ وصوله إلى هولندا، واصل طارق مسيرته الحرفية، بما في ذلك تنفيذ طلبات لصالح De Bijenkorf أمستردام، وكذلك في Atelier Shekho، حيث يتولى إصلاح الملابس وتفصيلها حسب الطلب.\n\nما يميز طارق هو مزيجه من الحرفية والدقة في التفاصيل والتوجه القوي نحو خدمة العميل. وباعتباره صاحب عمل مستقل يسعى دائمًا لإيجاد الحلول، فإنه يقدم الجودة بغض النظر عن الظروف، سواء كان الأمر يتعلق بإصلاح أو بقطعة ملابس كاملة مُفصّلة على القياس. يتحدث طارق العربية السورية بطلاقة، ولديه إلمام جيد باللغتين الهولندية والإنجليزية، وهو مستعد لصنع أو إصلاح ملابسكم بدقة وعناية.",
+    "ownerImage": "/images/about/owner.jpg",
+    "shopImages": [
+      "/images/about/shop1.jpg",
+      "/images/about/shop2.jpg",
+      "/images/about/shop3.jpg"
+    ],
+    "social": {
+      "instagram": "https://www.instagram.com/atelierkharita?igsi=MTN1OGt3aW91MGVzbw==",
+      "facebook": "#",
+      "whatsapp": "https://wa.me/qr/MGIHOBNWRV7WM1"
+    }
+  },
+  "services": [
+    {
+      "id": "pants-shorten",
+      "category": "بناطيل",
+      "item": "تقصير",
+      "price": 6,
+      "priceUnit": "flat"
+    },
+    {
+      "id": "pants-takein",
+      "category": "بناطيل",
+      "item": "تضييق",
+      "price": 10,
+      "priceUnit": "flat"
+    },
+    {
+      "id": "pants-zipper",
+      "category": "بناطيل",
+      "item": "سحاب جديد",
+      "price": 10,
+      "priceUnit": "flat"
+    },
+    {
+      "id": "pants-pockets",
+      "category": "بناطيل",
+      "item": "جيوب جديدة",
+      "price": 10,
+      "priceUnit": "flat"
+    },
+    {
+      "id": "outerwear-length",
+      "category": "بليزر، معطف وجاكيت",
+      "item": "تقصير الطول",
+      "price": 20,
+      "priceUnit": "flat"
+    },
+    {
+      "id": "outerwear-sides",
+      "category": "بليزر، معطف وجاكيت",
+      "item": "تضييق الجوانب",
+      "price": 20,
+      "priceUnit": "flat"
+    },
+    {
+      "id": "outerwear-sleeves",
+      "category": "بليزر، معطف وجاكيت",
+      "item": "تقصير الأكمام",
+      "price": 20,
+      "priceUnit": "flat"
+    },
+    {
+      "id": "outerwear-zipper",
+      "category": "بليزر، معطف وجاكيت",
+      "item": "سحاب جديد",
+      "price": 20,
+      "priceUnit": "flat"
+    },
+    {
+      "id": "curtains-shorten",
+      "category": "ستائر",
+      "item": "تقصير",
+      "price": 5,
+      "priceUnit": "per meter"
+    },
+    {
+      "id": "dresswear-shorten",
+      "category": "فستان، تنورة وبلوزة",
+      "item": "تقصير",
+      "price": 10,
+      "priceUnit": "flat"
+    },
+    {
+      "id": "dresswear-takein",
+      "category": "فستان، تنورة وبلوزة",
+      "item": "تضييق",
+      "price": 10,
+      "priceUnit": "flat"
+    },
+    {
+      "id": "dresswear-zipper",
+      "category": "فستان، تنورة وبلوزة",
+      "item": "سحاب جديد",
+      "price": 10,
+      "priceUnit": "flat"
+    },
+    {
+      "id": "dresswear-sleeves",
+      "category": "فستان، تنورة وبلوزة",
+      "item": "تقصير الأكمام",
+      "price": 10,
+      "priceUnit": "flat"
+    }
+  ],
+  "cta": {
+    "line": "هل أنت مستعد لمنح ملابسك حياة جديدة؟",
+    "button": "احجز موعد الإصلاح"
+  },
+  "booking": {
+    "heading": "احجز موعدًا",
+    "nameLabel": "الاسم",
+    "phoneLabel": "رقم الهاتف",
+    "dropOffLabel": "وقت التسليم",
+    "locationsLabel": "مواقع التسليم",
+    "servicesLabel": "الخدمات",
+    "descriptionLabel": "وصف إضافي",
+    "termsLabel": "أوافق على الشروط والأحكام وسياسة الخصوصية",
+    "termsLink": "الشروط والأحكام",
+    "privacyLink": "سياسة الخصوصية",
+    "confirmButton": "تأكيد",
+    "successMessage": "شكرًا لك — لقد استلمنا حجزك، سنتواصل معك للتأكيد.",
+    "errorRequired": "هذا الحقل مطلوب"
+  },
+  "prices": {
+    "title": "الخدمات والأسعار",
+    "priceHeader": "السعر",
+    "bookService": "احجز هذه الخدمة"
+  }
+}

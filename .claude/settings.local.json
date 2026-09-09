@@ -1,0 +1,17 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(rm -rf \"/c/Work/Atelier Kharita Claude/.next\")",
+      "Bash(find /c/Users/musta/AppData/Local/Temp -iname \"*.png\" -newer /c/Work 2>/dev/null | head -20; echo \"---\"; find /c/Users -maxdepth 6 -iname \"*paste*\" -o -iname \"*clipboard*\" 2>/dev/null | grep -iv node_modules | head -20)",
+      "Bash(npx tsc *)",
+      "Bash(npx eslint *)",
+      "WebSearch",
+      "Bash(node -e ' *)",
+      "Bash(node -e \"console.log\\(require\\('./node_modules/tailwindcss/package.json'\\).version\\)\")",
+      "Bash(node -e \"console.log\\(require\\('./package.json'\\).scripts.dev\\)\")",
+      "Bash(grep -noE '\"[A-Za-z][A-Za-z ,.…&/\\(\\)€-]{2,}\"' app/admin/layout.tsx app/admin/sign-in/page.tsx \"app/admin/\\(dashboard\\)/layout.tsx\" \"app/admin/\\(dashboard\\)/orders/page.tsx\" \"app/admin/\\(dashboard\\)/prices/page.tsx\" \"app/admin/\\(dashboard\\)/images/page.tsx\" \"app/admin/\\(dashboard\\)/content/page.tsx\" components/admin/PricesEditor.tsx components/admin/ImagesManager.tsx)",
+      "Bash(node -e \"const d=require\\('./messages/nl.json'\\); console.log\\(JSON.stringify\\(d.about.social, null, 2\\)\\)\")",
+      "Bash(node \"C:\\\\Users\\\\musta\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Work-Atelier-Kharita-Claude\\\\3da67b49-9a25-41ed-b298-7e21208d5d70\\\\scratchpad\\\\test-admin-bookings.mjs\")"
+    ]
+  }
+}
