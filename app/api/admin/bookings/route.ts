@@ -1,6 +1,13 @@
 import { NextResponse } from "next/server";
 import { isAdminRequest } from "@/lib/adminAuth";
-import { mutateBookings, type BookingStatus } from "@/lib/bookings";
+import {
+  getBooking,
+  updateBookingStatus,
+  type BookingStatus,
+} from "@/lib/bookings";
+import { db } from "@/lib/db";
+import { bookings } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 
 const ASSIGNABLE_STATUSES: BookingStatus[] = ["confirmed", "done"];
 
@@ -18,12 +25,13 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "invalid_fields" }, { status: 400 });
   }
 
-  const found = await mutateBookings((bookings) => {
-    const booking = bookings.find((b) => b.id === id);
-    if (!booking) return false;
-    booking.status = status as BookingStatus;
-    return true;
-  });
+  const booking = await getBooking(id);
+  if (!booking) {
+    return NextResponse.json({ error: "booking_not_found" }, { status: 404 });
+  }
+
+  await updateBookingStatus(id, status as BookingStatus);
+  const found = true;
 
   if (!found) {
     return NextResponse.json({ error: "booking_not_found" }, { status: 404 });
@@ -44,12 +52,8 @@ export async function DELETE(request: Request) {
     return NextResponse.json({ error: "invalid_fields" }, { status: 400 });
   }
 
-  const found = await mutateBookings((bookings) => {
-    const index = bookings.findIndex((b) => b.id === id);
-    if (index === -1) return false;
-    bookings.splice(index, 1);
-    return true;
-  });
+  const deleted = await db.delete(bookings).where(eq(bookings.id, id)).returning({ id: bookings.id });
+  const found = deleted.length > 0;
 
   if (!found) {
     return NextResponse.json({ error: "booking_not_found" }, { status: 404 });
