@@ -3,6 +3,9 @@ import path from "path";
 import { NextResponse } from "next/server";
 import { isAdminRequest } from "@/lib/adminAuth";
 import { extractMapEmbedSrc } from "@/lib/mapEmbed";
+import { db } from "@/lib/db";
+import { siteContent } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 
 const LOCALES = ["en", "nl", "ar"] as const;
 type Locale = (typeof LOCALES)[number];
@@ -172,7 +175,13 @@ export async function PATCH(request: Request) {
   data.meta.title = meta.title.trim();
   data.meta.description = meta.description.trim();
 
-  await fs.writeFile(filePath, JSON.stringify(data, null, 2) + "\n");
+  await db
+    .insert(siteContent)
+    .values({ locale: body.locale as Locale, content: data, updatedAt: new Date() })
+    .onConflictDoUpdate({
+      target: siteContent.locale,
+      set: { content: data, updatedAt: new Date() },
+    });
 
   return NextResponse.json({ ok: true });
 }

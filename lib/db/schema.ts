@@ -1,5 +1,11 @@
 import { jsonb, pgTable, text, timestamp, boolean } from "drizzle-orm/pg-core";
 
+export const siteContent = pgTable("site_content", {
+  locale: text("locale").primaryKey(),
+  content: jsonb("content").$type<Record<string, unknown>>().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export const bookings = pgTable("bookings", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),

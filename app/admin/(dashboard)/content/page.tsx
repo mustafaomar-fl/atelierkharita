@@ -2,12 +2,29 @@ import { promises as fs } from "fs";
 import path from "path";
 import Link from "next/link";
 import ContentEditor, { type LocaleContent } from "@/components/admin/ContentEditor";
+import { db } from "@/lib/db";
+import { siteContent } from "@/lib/db/schema";
+import { eq } from "drizzle-orm";
 
 const LOCALES = ["en", "nl", "ar"] as const;
 
 async function readLocaleContent(locale: string): Promise<LocaleContent> {
-  const raw = await fs.readFile(path.join(process.cwd(), "messages", `${locale}.json`), "utf-8");
-  const data = JSON.parse(raw);
+  const saved = await db
+    .select({ content: siteContent.content })
+    .from(siteContent)
+    .where(eq(siteContent.locale, locale))
+    .limit(1);
+  const raw = saved[0]?.content;
+  const data = (raw ?? JSON.parse(
+    await fs.readFile(path.join(process.cwd(), "messages", `${locale}.json`), "utf-8")
+  )) as {
+    hero: { title: string; bookButton: string; pricesButton: string; slides: { subtitle: string }[] };
+    about: { ownerName: string; ownerRole: string; paragraph: string; social?: Record<string, string> };
+    testimonials: { name: string; comment: string; rating: number }[];
+    footer: Record<string, string>;
+    cta: { line: string; button: string };
+    meta: { title: string; description: string };
+  };
   return {
     hero: {
       title: data.hero.title,
