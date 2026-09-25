@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
-import { mutateBookings, type BookingRecord } from "@/lib/bookings";
+import { createBooking, type BookingRecord } from "@/lib/bookings";
 
 const OWNER_EMAIL = "atelierkharita@gmail.com";
 
@@ -15,13 +15,7 @@ type BookingPayload = {
   locale: string;
 };
 
-function appendBooking(record: BookingRecord): Promise<void> {
-  return mutateBookings((bookings) => {
-    bookings.push(record);
-  });
-}
-
-async function sendOwnerNotification(record: BookingRecord) {
+async function sendOwnerNotification(record: BookingRecord, saveError?: unknown) {
   const { EMAIL_SMTP_HOST, EMAIL_SMTP_PORT, EMAIL_SMTP_USER, EMAIL_SMTP_PASS, EMAIL_FROM } =
     process.env;
 
@@ -49,6 +43,7 @@ async function sendOwnerNotification(record: BookingRecord) {
     `Description: ${record.description || "-"}`,
     `Locale: ${record.locale}`,
     `Submitted at: ${record.createdAt}`,
+    ...(saveError ? [`Database save error: ${saveError instanceof Error ? saveError.message : String(saveError)}`] : []),
   ];
 
   await transporter.sendMail({
@@ -85,7 +80,19 @@ export async function POST(request: Request) {
     locale: body.locale || "en",
   };
 
-  await appendBooking(record);
+  try {
+    await createBooking(record);
+  } catch (error) {
+    console.error("[bookings] Failed to save booking:", error);
+
+    try {
+      await sendOwnerNotification(record, error);
+    } catch (emailError) {
+      console.error("[bookings] Failed to send booking failure notification:", emailError);
+    }
+
+    return NextResponse.json({ error: "booking_save_failed" }, { status: 500 });
+  }
 
   try {
     await sendOwnerNotification(record);
