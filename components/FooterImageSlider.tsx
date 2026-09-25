@@ -26,7 +26,7 @@ export default function FooterImageSlider() {
         <img
           key={src}
           src={src}
-          alt=""
+          alt="Atelier Kharita tailoring workshop"
           className={`absolute inset-0 h-full w-full object-cover transition-opacity duration-700 ${
             i === index ? "opacity-100" : "opacity-0"
           }`}
@@ -45,8 +45,8 @@ export default function FooterImageSlider() {
               aria-label={`Go to photo ${i + 1}`}
               aria-current={i === index}
               onClick={() => setIndex(i)}
-              className={`h-1.5 w-1.5 rounded-full transition-colors ${
-                i === index ? "bg-accent" : "bg-white/50"
+              className={`h-1.5 rounded-full transition-all ${
+                i === index ? "w-4 bg-accent" : "w-1.5 bg-white/50 hover:bg-white/80"
               }`}
             />
           ))}

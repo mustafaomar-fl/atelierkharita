@@ -71,7 +71,7 @@ export default function OrdersTable({ bookings: initial }: { bookings: BookingRe
   }
 
   return (
-    <div className="overflow-x-auto rounded-xl border border-neutral-200 bg-white shadow-sm">
+    <div className="overflow-x-auto rounded-xl border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-md">
       <table className="w-full min-w-[1100px] text-start text-sm">
         <thead>
           <tr className="border-b border-neutral-200 bg-neutral-50 text-neutral-500">
@@ -87,7 +87,10 @@ export default function OrdersTable({ bookings: initial }: { bookings: BookingRe
         </thead>
         <tbody>
           {bookings.map((booking) => (
-            <tr key={booking.id} className="border-b border-neutral-100 last:border-0">
+            <tr
+              key={booking.id}
+              className="border-b border-neutral-100 transition-colors last:border-0 hover:bg-neutral-50/80"
+            >
               <td className="px-4 py-3 whitespace-nowrap text-neutral-500">
                 {new Date(booking.createdAt).toLocaleString()}
               </td>

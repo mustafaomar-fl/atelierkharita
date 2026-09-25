@@ -62,10 +62,10 @@ function CheckboxCard({
 }) {
   return (
     <label
-      className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 font-body text-sm transition-colors ${
+      className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 font-body text-sm transition-all ${
         checked
-          ? "border-primary bg-primary/5"
-          : "border-neutral-200 bg-white hover:border-neutral-300"
+          ? "border-primary bg-primary/5 shadow-sm"
+          : "border-neutral-200 bg-white hover:border-neutral-300 hover:shadow-sm"
       }`}
     >
       <span
@@ -143,7 +143,13 @@ function TermsLabel({
   );
 }
 
-export default function BookingForm() {
+export default function BookingForm({
+  location1,
+  location2,
+}: {
+  location1: string;
+  location2: string;
+}) {
   const t = useTranslations("booking");
   const tGlobal = useTranslations();
   const locale = useLocale();
@@ -215,7 +221,7 @@ export default function BookingForm() {
   if (bookingId) {
     return (
       <div className="bg-white px-4 py-24 sm:px-6">
-        <div className="mx-auto max-w-md rounded-2xl border border-neutral-200 bg-white p-10 text-center shadow-sm">
+        <div className="mx-auto max-w-md rounded-lg border border-primary/10 bg-white p-10 text-center shadow-sm">
           <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-primary/10 text-primary">
             <svg
               viewBox="0 0 24 24"
@@ -239,11 +245,12 @@ export default function BookingForm() {
   }
 
   return (
-    <div className="bg-white px-4 py-16 sm:px-6 sm:py-20">
+    <div className="bg-white px-4 py-20 sm:px-6 sm:py-24">
       <div className="mx-auto max-w-2xl">
-        <h1 className="mb-8 font-heading text-3xl font-bold text-accent">{t("heading")}</h1>
+        <span className="mb-4 block h-0.5 w-10 bg-accent" aria-hidden="true" />
+        <h1 className="mb-8 font-heading text-3xl font-bold text-primary">{t("heading")}</h1>
 
-        <div className="rounded-2xl bg-primary p-6 shadow-sm sm:p-10">
+        <div className="panel-navy rounded-lg p-6 shadow-md sm:p-10">
           <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-7">
             <div className="grid gap-6 sm:grid-cols-2">
               <Field label={t("nameLabel")} error={errors.name}>
@@ -271,8 +278,8 @@ export default function BookingForm() {
                 {t("locationsLabel")}
               </span>
               <ul className="flex flex-col gap-1 font-body text-sm text-accent/80">
-                <li>{tGlobal("footer.location1")}</li>
-                <li>{tGlobal("footer.location2")}</li>
+                {location1 && <li>{location1}</li>}
+                {location2 && <li>{location2}</li>}
               </ul>
             </div>
 
@@ -335,7 +342,7 @@ export default function BookingForm() {
             <button
               type="submit"
               disabled={!form.termsAccepted || submitting}
-              className="w-full rounded-full bg-accent px-8 py-3.5 font-button text-sm font-normal text-primary/70 shadow-sm transition-all hover:bg-accent-dark hover:shadow-md disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none sm:w-auto sm:self-start"
+              className="w-full rounded-md bg-accent px-8 py-3.5 font-button text-sm font-normal text-primary shadow-sm transition-colors hover:bg-accent-dark disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto sm:self-start"
             >
               {t("confirmButton")}
             </button>

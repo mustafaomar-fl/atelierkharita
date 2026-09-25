@@ -50,7 +50,7 @@ export default function PricesEditor({ categories }: { categories: Category[] })
       {categories.map((category) => (
         <div key={category.category}>
           <h2 className="mb-3 font-semibold text-neutral-800">{category.category}</h2>
-          <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm">
+          <div className="overflow-hidden rounded-xl border border-neutral-200 bg-white shadow-sm transition-shadow hover:shadow-md">
             <table className="w-full text-start text-sm">
               <thead>
                 <tr className="border-b border-neutral-200 bg-neutral-50 text-neutral-500">
@@ -65,7 +65,10 @@ export default function PricesEditor({ categories }: { categories: Category[] })
                   const row = rows[service.id];
                   const rowStatus = status[service.id] ?? "idle";
                   return (
-                    <tr key={service.id} className="border-b border-neutral-100 last:border-0">
+                    <tr
+                      key={service.id}
+                      className="border-b border-neutral-100 transition-colors last:border-0 hover:bg-neutral-50/80"
+                    >
                       <td className="px-4 py-3 text-neutral-700">{service.item}</td>
                       <td className="px-4 py-3">
                         <input

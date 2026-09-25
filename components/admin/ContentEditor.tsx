@@ -8,20 +8,12 @@ export type LocaleContent = {
     ownerName: string;
     ownerRole: string;
     paragraph: string;
-    social: { instagram: string; facebook: string; whatsapp: string };
   };
-  testimonials: { name: string; comment: string; rating: number }[];
   footer: {
     tagline: string;
-    phone: string;
-    kvk: string;
-    location1: string;
-    location2: string;
     hoursNote: string;
     findUsHeading: string;
-    mapEmbedUrl: string;
   };
-  cta: { line: string; button: string };
   meta: { title: string; description: string };
 };
 
@@ -89,13 +81,10 @@ function Section({
 }
 
 const SECTION_NAV = [
-  { id: "shop-location", label: "موقع المتجر" },
   { id: "meta", label: "البيانات الوصفية" },
   { id: "hero", label: "القسم الرئيسي" },
   { id: "about", label: "من نحن" },
-  { id: "testimonials", label: "آراء العملاء" },
   { id: "footer", label: "التذييل" },
-  { id: "cta", label: "الدعوة الختامية" },
 ];
 
 export default function ContentEditor({
@@ -181,31 +170,6 @@ export default function ContentEditor({
         ))}
       </div>
 
-      <Section title="موقع المتجر" id="shop-location">
-        <TextField
-          label="سطر العنوان الأول"
-          value={current.footer.location1}
-          onChange={(value) =>
-            update((draft) => ({ ...draft, footer: { ...draft.footer, location1: value } }))
-          }
-        />
-        <TextField
-          label="سطر العنوان الثاني"
-          value={current.footer.location2}
-          onChange={(value) =>
-            update((draft) => ({ ...draft, footer: { ...draft.footer, location2: value } }))
-          }
-        />
-        <TextField
-          label="رابط تضمين خرائط جوجل"
-          value={current.footer.mapEmbedUrl}
-          onChange={(value) =>
-            update((draft) => ({ ...draft, footer: { ...draft.footer, mapEmbedUrl: value } }))
-          }
-          hint="في خرائط جوجل: مشاركة ← تضمين خريطة ← نسخ HTML، ثم الصق المقطع كاملاً هنا (أو الرابط فقط). اتركه فارغًا لعرض مربع بديل بدلاً من ذلك."
-        />
-      </Section>
-
       <Section title="البيانات الوصفية (نتائج بحث جوجل / معاينات الروابط)" id="meta">
         <TextField
           label="عنوان الصفحة"
@@ -283,86 +247,6 @@ export default function ContentEditor({
           }
           multiline
         />
-        <TextField
-          label="رابط إنستغرام"
-          value={current.about.social.instagram}
-          onChange={(value) =>
-            update((draft) => ({
-              ...draft,
-              about: { ...draft.about, social: { ...draft.about.social, instagram: value } },
-            }))
-          }
-          hint="اتركه فارغًا (أو #) لإخفاء الأيقونة على الموقع إلى أن يتوفر رابط حقيقي."
-        />
-        <TextField
-          label="رابط فيسبوك"
-          value={current.about.social.facebook}
-          onChange={(value) =>
-            update((draft) => ({
-              ...draft,
-              about: { ...draft.about, social: { ...draft.about.social, facebook: value } },
-            }))
-          }
-          hint="اتركه فارغًا (أو #) لإخفاء الأيقونة على الموقع إلى أن يتوفر رابط حقيقي."
-        />
-        <TextField
-          label="رابط واتساب"
-          value={current.about.social.whatsapp}
-          onChange={(value) =>
-            update((draft) => ({
-              ...draft,
-              about: { ...draft.about, social: { ...draft.about.social, whatsapp: value } },
-            }))
-          }
-          hint="استخدم رابط wa.me، مثل https://wa.me/31644469920. اتركه فارغًا (أو #) لإخفاء الأيقونة."
-        />
-      </Section>
-
-      <Section title="آراء العملاء" id="testimonials">
-        {current.testimonials.map((testimonial, i) => (
-          <div key={i} className="flex flex-col gap-3 border-t border-neutral-100 pt-4 first:border-0 first:pt-0">
-            <TextField
-              label={`الاسم ${i + 1}`}
-              value={testimonial.name}
-              onChange={(value) =>
-                update((draft) => {
-                  const testimonials = [...draft.testimonials];
-                  testimonials[i] = { ...testimonials[i], name: value };
-                  return { ...draft, testimonials };
-                })
-              }
-            />
-            <TextField
-              label={`التعليق ${i + 1}`}
-              value={testimonial.comment}
-              onChange={(value) =>
-                update((draft) => {
-                  const testimonials = [...draft.testimonials];
-                  testimonials[i] = { ...testimonials[i], comment: value };
-                  return { ...draft, testimonials };
-                })
-              }
-              multiline
-            />
-            <label className="flex flex-col gap-1.5">
-              <span className="text-sm font-semibold text-neutral-700">التقييم {i + 1} (1-5)</span>
-              <input
-                type="number"
-                min={1}
-                max={5}
-                value={testimonial.rating}
-                onChange={(e) =>
-                  update((draft) => {
-                    const testimonials = [...draft.testimonials];
-                    testimonials[i] = { ...testimonials[i], rating: Number(e.target.value) };
-                    return { ...draft, testimonials };
-                  })
-                }
-                className="w-24 rounded-lg border border-neutral-200 bg-neutral-50 px-3.5 py-2.5 text-sm focus:border-primary focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/15"
-              />
-            </label>
-          </div>
-        ))}
       </Section>
 
       <Section title="التذييل" id="footer">
@@ -372,18 +256,6 @@ export default function ContentEditor({
           onChange={(value) =>
             update((draft) => ({ ...draft, footer: { ...draft.footer, tagline: value } }))
           }
-        />
-        <TextField
-          label="الهاتف"
-          value={current.footer.phone}
-          onChange={(value) =>
-            update((draft) => ({ ...draft, footer: { ...draft.footer, phone: value } }))
-          }
-        />
-        <TextField
-          label="رقم السجل التجاري (KVK)"
-          value={current.footer.kvk}
-          onChange={(value) => update((draft) => ({ ...draft, footer: { ...draft.footer, kvk: value } }))}
         />
         <TextField
           label="ملاحظة ساعات العمل"
@@ -398,19 +270,6 @@ export default function ContentEditor({
           onChange={(value) =>
             update((draft) => ({ ...draft, footer: { ...draft.footer, findUsHeading: value } }))
           }
-        />
-      </Section>
-
-      <Section title="الدعوة الختامية" id="cta">
-        <TextField
-          label="النص"
-          value={current.cta.line}
-          onChange={(value) => update((draft) => ({ ...draft, cta: { ...draft.cta, line: value } }))}
-        />
-        <TextField
-          label="الزر"
-          value={current.cta.button}
-          onChange={(value) => update((draft) => ({ ...draft, cta: { ...draft.cta, button: value } }))}
         />
       </Section>
 

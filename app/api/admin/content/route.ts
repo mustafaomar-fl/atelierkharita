@@ -2,10 +2,6 @@ import { promises as fs } from "fs";
 import path from "path";
 import { NextResponse } from "next/server";
 import { isAdminRequest } from "@/lib/adminAuth";
-import { extractMapEmbedSrc } from "@/lib/mapEmbed";
-import { db } from "@/lib/db";
-import { siteContent } from "@/lib/db/schema";
-import { eq } from "drizzle-orm";
 
 const LOCALES = ["en", "nl", "ar"] as const;
 type Locale = (typeof LOCALES)[number];
@@ -13,24 +9,8 @@ type Locale = (typeof LOCALES)[number];
 type ContentPayload = {
   locale: Locale;
   hero: { title: string; bookButton: string; pricesButton: string; slideSubtitles: string[] };
-  about: {
-    ownerName: string;
-    ownerRole: string;
-    paragraph: string;
-    social: { instagram: string; facebook: string; whatsapp: string };
-  };
-  testimonials: { name: string; comment: string; rating: number }[];
-  footer: {
-    tagline: string;
-    phone: string;
-    kvk: string;
-    location1: string;
-    location2: string;
-    hoursNote: string;
-    findUsHeading: string;
-    mapEmbedUrl: string;
-  };
-  cta: { line: string; button: string };
+  about: { ownerName: string; ownerRole: string; paragraph: string };
+  footer: { tagline: string; hoursNote: string; findUsHeading: string };
   meta: { title: string; description: string };
 };
 
@@ -57,19 +37,12 @@ export async function PATCH(request: Request) {
   const raw = await fs.readFile(filePath, "utf-8");
   const data = JSON.parse(raw) as {
     hero: { title: string; bookButton: string; pricesButton: string; slides: { subtitle: string }[] };
-    about: {
-      ownerName: string;
-      ownerRole: string;
-      paragraph: string;
-      social: { instagram: string; facebook: string; whatsapp: string };
-    };
-    testimonials: { name: string; comment: string; rating: number }[];
+    about: { ownerName: string; ownerRole: string; paragraph: string };
     footer: Record<string, string>;
-    cta: { line: string; button: string };
     meta: { title: string; description: string };
   };
 
-  const { hero, about, testimonials, footer, cta, meta } = body;
+  const { hero, about, footer, meta } = body;
 
   if (
     !hero ||
@@ -87,55 +60,22 @@ export async function PATCH(request: Request) {
     !about ||
     !isNonEmptyString(about.ownerName) ||
     !isNonEmptyString(about.ownerRole) ||
-    !isNonEmptyString(about.paragraph) ||
-    !about.social ||
-    typeof about.social.instagram !== "string" ||
-    typeof about.social.facebook !== "string" ||
-    typeof about.social.whatsapp !== "string"
+    !isNonEmptyString(about.paragraph)
   ) {
     return NextResponse.json({ error: "invalid_about" }, { status: 400 });
   }
 
   if (
-    !Array.isArray(testimonials) ||
-    testimonials.length !== data.testimonials.length ||
-    !testimonials.every(
-      (item) =>
-        isNonEmptyString(item?.name) &&
-        isNonEmptyString(item?.comment) &&
-        typeof item?.rating === "number" &&
-        item.rating >= 1 &&
-        item.rating <= 5
-    )
-  ) {
-    return NextResponse.json({ error: "invalid_testimonials" }, { status: 400 });
-  }
-
-  if (
     !footer ||
     !isNonEmptyString(footer.tagline) ||
-    !isNonEmptyString(footer.phone) ||
-    typeof footer.kvk !== "string" ||
-    !isNonEmptyString(footer.location1) ||
-    typeof footer.location2 !== "string" ||
     !isNonEmptyString(footer.hoursNote) ||
-    !isNonEmptyString(footer.findUsHeading) ||
-    typeof footer.mapEmbedUrl !== "string"
+    !isNonEmptyString(footer.findUsHeading)
   ) {
     return NextResponse.json({ error: "invalid_footer" }, { status: 400 });
   }
 
-  if (!cta || !isNonEmptyString(cta.line) || !isNonEmptyString(cta.button)) {
-    return NextResponse.json({ error: "invalid_cta" }, { status: 400 });
-  }
-
   if (!meta || !isNonEmptyString(meta.title) || !isNonEmptyString(meta.description)) {
     return NextResponse.json({ error: "invalid_meta" }, { status: 400 });
-  }
-
-  const trimmedMapUrl = footer.mapEmbedUrl.trim();
-  if (trimmedMapUrl && !extractMapEmbedSrc(trimmedMapUrl)) {
-    return NextResponse.json({ error: "invalid_map_url" }, { status: 400 });
   }
 
   data.hero.title = hero.title.trim();
@@ -148,40 +88,15 @@ export async function PATCH(request: Request) {
   data.about.ownerName = about.ownerName.trim();
   data.about.ownerRole = about.ownerRole.trim();
   data.about.paragraph = about.paragraph.trim();
-  data.about.social = {
-    instagram: about.social.instagram.trim(),
-    facebook: about.social.facebook.trim(),
-    whatsapp: about.social.whatsapp.trim(),
-  };
-
-  data.testimonials.forEach((testimonial, i) => {
-    testimonial.name = testimonials[i].name.trim();
-    testimonial.comment = testimonials[i].comment.trim();
-    testimonial.rating = testimonials[i].rating;
-  });
 
   data.footer.tagline = footer.tagline.trim();
-  data.footer.phone = footer.phone.trim();
-  data.footer.kvk = footer.kvk.trim();
-  data.footer.location1 = footer.location1.trim();
-  data.footer.location2 = footer.location2.trim();
   data.footer.hoursNote = footer.hoursNote.trim();
   data.footer.findUsHeading = footer.findUsHeading.trim();
-  data.footer.mapEmbedUrl = trimmedMapUrl ? (extractMapEmbedSrc(trimmedMapUrl) ?? "") : "";
-
-  data.cta.line = cta.line.trim();
-  data.cta.button = cta.button.trim();
 
   data.meta.title = meta.title.trim();
   data.meta.description = meta.description.trim();
 
-  await db
-    .insert(siteContent)
-    .values({ locale: body.locale as Locale, content: data, updatedAt: new Date() })
-    .onConflictDoUpdate({
-      target: siteContent.locale,
-      set: { content: data, updatedAt: new Date() },
-    });
+  await fs.writeFile(filePath, JSON.stringify(data, null, 2) + "\n");
 
   return NextResponse.json({ ok: true });
 }
