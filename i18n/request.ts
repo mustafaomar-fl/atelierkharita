@@ -45,6 +45,6 @@ export default getRequestConfig(async ({ requestLocale }) => {
 
   return {
     locale,
-    messages: stored?.content ?? fallbackMessages,
+    messages: mergeMessages(fallbackMessages, stored?.content),
   };
 });
