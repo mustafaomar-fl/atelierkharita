@@ -261,10 +261,7 @@ export default function BookingForm({
           <div className="grid lg:grid-cols-[0.72fr_1.28fr]">
             <aside className="flex flex-col justify-between border-b border-white/10 p-6 sm:p-8 lg:border-b-0 lg:border-r lg:p-10">
               <div>
-                <p className="font-heading text-2xl text-accent">A considered repair.</p>
-                <p className="mt-4 max-w-xs font-body text-sm leading-6 text-paper/70">
-                  Tell us what needs attention and we&apos;ll prepare the right care for your piece.
-                </p>
+                <p className="font-heading text-2xl text-accent">{t("repairTagline")}</p>
               </div>
               <div className="mt-10 rounded-xl border border-accent/25 bg-primary-dark/30 p-4">
                 <span className="mb-2 flex items-center gap-2 font-body text-xs font-semibold uppercase tracking-[0.14em] text-accent">
