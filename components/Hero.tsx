@@ -72,12 +72,15 @@ export default function Hero() {
   }
 
   return (
-    <section id="hero" className="panel-navy w-full overflow-hidden">
-      <div className="mx-auto flex max-w-6xl flex-col lg:min-h-[620px] lg:flex-row lg:items-stretch">
-        <div className="flex flex-col justify-center gap-7 px-6 py-16 sm:px-10 sm:py-20 lg:w-[42%] lg:px-12 lg:py-0">
-          <span className="h-0.5 w-10 bg-accent" aria-hidden="true" />
+    <section id="hero" className="panel-navy w-full overflow-hidden border-b border-primary-light/30">
+      <div className="mx-auto flex max-w-7xl flex-col lg:min-h-[650px] lg:flex-row lg:items-stretch">
+        <div className="flex flex-col justify-center gap-8 px-6 py-16 sm:px-10 sm:py-20 lg:w-[42%] lg:px-16 lg:py-0">
+          <div className="flex items-center gap-3 text-xs tracking-[0.22em] text-accent uppercase">
+            <span className="h-px w-8 bg-accent" aria-hidden="true" />
+            <span>Atelier Kharita</span>
+          </div>
           <div>
-            <h1 className="font-heading text-4xl font-bold text-accent sm:text-5xl">
+            <h1 className="max-w-xl font-heading text-5xl font-bold leading-[0.95] tracking-[-0.03em] text-accent sm:text-6xl lg:text-7xl">
               {t("title")}
             </h1>
             <p className="mt-5 font-body text-base leading-relaxed text-white/90 sm:text-lg">
@@ -87,7 +90,7 @@ export default function Hero() {
           <div className="flex flex-col gap-3 sm:flex-row">
             <Link
               href="/book"
-              className="rounded-md bg-accent px-6 py-3 text-center font-button text-sm font-normal text-primary shadow-lg transition-colors hover:bg-accent-dark sm:text-base"
+              className="rounded-sm bg-accent px-6 py-3.5 text-center font-button text-sm font-semibold text-primary shadow-lg transition-transform hover:-translate-y-0.5 hover:bg-accent-dark sm:text-base"
             >
               {t("bookButton")}
             </Link>
@@ -100,11 +103,11 @@ export default function Hero() {
           </div>
         </div>
 
-        <div className="flex w-full flex-col lg:w-[58%] lg:flex-row lg:items-stretch">
+        <div className="flex w-full flex-col justify-center gap-3 py-6 pe-6 ps-6 sm:py-8 sm:pe-10 lg:w-[58%] lg:flex-row lg:items-stretch lg:py-10 lg:pe-12 lg:ps-6">
           {/* Drag to compare before/after within the current example. */}
           <div
             ref={containerRef}
-            className="relative min-h-[380px] w-full flex-1 touch-none select-none border border-white/15 sm:min-h-[420px]"
+            className="relative min-h-[380px] w-full flex-1 touch-none select-none border border-white/25 bg-primary-dark shadow-2xl sm:min-h-[500px]"
             onPointerDown={(e) => {
               draggingRef.current = true;
               setDragging(true);
