@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 import { createBooking, type BookingRecord } from "@/lib/bookings";
 
-const OWNER_EMAIL = "atelierkharita@gmail.com";
+const OWNER_EMAIL = process.env.BOOKING_NOTIFY_EMAIL || "atelierkharita@gmail.com";
 
 type BookingPayload = {
   name: string;
