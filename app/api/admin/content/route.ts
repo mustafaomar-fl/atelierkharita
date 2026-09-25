@@ -1,7 +1,11 @@
 import { promises as fs } from "fs";
 import path from "path";
+import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { isAdminRequest } from "@/lib/adminAuth";
+import { db } from "@/lib/db";
+import { siteContent } from "@/lib/db/schema";
 
 const LOCALES = ["en", "nl", "ar"] as const;
 type Locale = (typeof LOCALES)[number];
@@ -33,8 +37,11 @@ export async function PATCH(request: Request) {
     return NextResponse.json({ error: "invalid_locale" }, { status: 400 });
   }
 
-  const filePath = messagesPath(body.locale as string);
-  const raw = await fs.readFile(filePath, "utf-8");
+  const locale = body.locale as Locale;
+  const [stored] = await db.select().from(siteContent).where(eq(siteContent.locale, locale)).limit(1);
+  const raw = stored
+    ? JSON.stringify(stored.content)
+    : await fs.readFile(messagesPath(locale), "utf-8");
   const data = JSON.parse(raw) as {
     hero: { title: string; bookButton: string; pricesButton: string; slides: { subtitle: string }[] };
     about: { ownerName: string; ownerRole: string; paragraph: string };
@@ -96,7 +103,11 @@ export async function PATCH(request: Request) {
   data.meta.title = meta.title.trim();
   data.meta.description = meta.description.trim();
 
-  await fs.writeFile(filePath, JSON.stringify(data, null, 2) + "\n");
+  await db.insert(siteContent).values({ locale, content: data }).onConflictDoUpdate({
+    target: siteContent.locale,
+    set: { content: data, updatedAt: new Date() },
+  });
+  revalidatePath("/", "layout");
 
   return NextResponse.json({ ok: true });
 }

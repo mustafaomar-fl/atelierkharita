@@ -6,6 +6,18 @@ export const siteContent = pgTable("site_content", {
   updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
 });
 
+export const siteSettings = pgTable("site_settings", {
+  id: text("id").primaryKey(),
+  data: jsonb("data").$type<Record<string, unknown>>().notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
+export const imageOverrides = pgTable("image_overrides", {
+  slot: text("slot").primaryKey(),
+  url: text("url").notNull(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+});
+
 export const bookings = pgTable("bookings", {
   id: text("id").primaryKey(),
   name: text("name").notNull(),

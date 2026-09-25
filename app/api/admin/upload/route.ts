@@ -1,9 +1,12 @@
-import { promises as fs } from "fs";
-import path from "path";
+import { put } from "@vercel/blob";
+import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import sharp from "sharp";
 import { isAdminRequest } from "@/lib/adminAuth";
 import { findImageSlot } from "@/lib/imageSlots";
+import { db } from "@/lib/db";
+import { imageOverrides } from "@/lib/db/schema";
 
 const MAX_UPLOAD_BYTES = 15 * 1024 * 1024; // 15MB
 const MAX_DIMENSION = 2400; // px, longest side — plenty for a hero banner, keeps files small
@@ -52,9 +55,17 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "invalid_image" }, { status: 400 });
   }
 
-  const destPath = path.join(process.cwd(), "public", slot.path);
-  await fs.mkdir(path.dirname(destPath), { recursive: true });
-  await fs.writeFile(destPath, outputBuffer);
+  const blob = await put(slot.path, outputBuffer, {
+    access: "public",
+    contentType: slot.format === "png" ? "image/png" : "image/jpeg",
+    addRandomSuffix: false,
+    allowOverwrite: true,
+  });
+  await db.insert(imageOverrides).values({ slot: slot.key, url: blob.url }).onConflictDoUpdate({
+    target: imageOverrides.slot,
+    set: { url: blob.url, updatedAt: new Date() },
+  });
+  revalidatePath("/", "layout");
 
-  return NextResponse.json({ ok: true, path: `/${slot.path}` });
+  return NextResponse.json({ ok: true, path: blob.url });
 }
