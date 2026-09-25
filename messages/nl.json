@@ -178,8 +178,9 @@
     "button": "Boek reparatieafspraak"
   },
   "booking": {
-    "heading": "Boek een Afspraak",
-    "nameLabel": "Naam",
+  "heading": "Boek een Afspraak",
+  "repairTagline": "Een weloverwogen reparatie.",
+  "nameLabel": "Naam",
     "phoneLabel": "Telefoonnummer",
     "dropOffLabel": "Inlevertijd",
     "locationsLabel": "Inleverlocaties",
