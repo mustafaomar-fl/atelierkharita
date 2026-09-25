@@ -1,7 +1,6 @@
-import { promises as fs } from "fs";
-import path from "path";
-
-const DATA_FILE = path.join(process.cwd(), "data", "bookings.json");
+import { desc, eq } from "drizzle-orm";
+import { db } from "@/lib/db";
+import { bookings } from "@/lib/db/schema";
 
 export type BookingStatus = "received" | "confirmed" | "done";
 
@@ -18,38 +17,57 @@ export type BookingRecord = {
   locale: string;
 };
 
-export async function readBookings(): Promise<BookingRecord[]> {
-  try {
-    const raw = await fs.readFile(DATA_FILE, "utf-8");
-    return JSON.parse(raw) as BookingRecord[];
-  } catch {
-    return [];
-  }
+function toBookingRecord(row: typeof bookings.$inferSelect): BookingRecord {
+  return {
+    id: row.id,
+    name: row.name,
+    phone: row.phone,
+    dropOffTime: row.dropOffTime,
+    services: row.services,
+    description: row.description,
+    termsAccepted: row.termsAccepted,
+    status: row.status as BookingStatus,
+    createdAt: row.createdAt.toISOString(),
+    locale: row.locale,
+  };
 }
 
-async function writeBookings(bookings: BookingRecord[]) {
-  await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
-  await fs.writeFile(DATA_FILE, JSON.stringify(bookings, null, 2));
-}
-
-// Two concurrent writes could otherwise both read the same file state and
-// each write back, silently losing whichever change wrote first. This
-// serializes every read-modify-write through the same in-memory queue so
-// they never clobber each other. It does not protect against multiple
-// server instances writing to the same file — a real database is required
-// for that.
-let writeQueue: Promise<unknown> = Promise.resolve();
-
-export function mutateBookings<T>(mutator: (bookings: BookingRecord[]) => T): Promise<T> {
-  const task = writeQueue.then(async () => {
-    const bookings = await readBookings();
-    const result = mutator(bookings);
-    await writeBookings(bookings);
-    return result;
+export async function createBooking(record: BookingRecord): Promise<void> {
+  await db.insert(bookings).values({
+    id: record.id,
+    name: record.name,
+    phone: record.phone,
+    dropOffTime: record.dropOffTime,
+    services: record.services,
+    description: record.description,
+    termsAccepted: record.termsAccepted,
+    status: record.status,
+    createdAt: new Date(record.createdAt),
+    locale: record.locale,
   });
-  writeQueue = task.then(
-    () => undefined,
-    () => undefined
-  );
-  return task;
+}
+
+export async function listBookings(): Promise<BookingRecord[]> {
+  const rows = await db.select().from(bookings).orderBy(desc(bookings.createdAt));
+  return rows.map(toBookingRecord);
+}
+
+export async function updateBookingStatus(
+  id: string,
+  status: BookingStatus
+): Promise<boolean> {
+  const updated = await db
+    .update(bookings)
+    .set({ status })
+    .where(eq(bookings.id, id))
+    .returning({ id: bookings.id });
+  return updated.length > 0;
+}
+
+export async function deleteBooking(id: string): Promise<boolean> {
+  const deleted = await db
+    .delete(bookings)
+    .where(eq(bookings.id, id))
+    .returning({ id: bookings.id });
+  return deleted.length > 0;
 }
