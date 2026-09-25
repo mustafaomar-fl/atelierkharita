@@ -1,5 +1,9 @@
 import { promises as fs } from "fs";
 import path from "path";
+import { eq } from "drizzle-orm";
+import { db } from "@/lib/db";
+import { siteSettings } from "@/lib/db/schema";
+import { revalidatePath } from "next/cache";
 
 // Business facts that are the same regardless of which language the visitor
 // is reading — phone number, addresses, map, social links. These used to
@@ -32,23 +36,36 @@ const DEFAULT_SETTINGS: BusinessSettings = {
   social: { instagram: "", facebook: "", tiktok: "", whatsapp: "" },
 };
 
+function mergeSettings(parsed: Partial<BusinessSettings>): BusinessSettings {
+  return {
+    ...DEFAULT_SETTINGS,
+    ...parsed,
+    social: { ...DEFAULT_SETTINGS.social, ...parsed.social },
+  };
+}
+
 export async function readSettings(): Promise<BusinessSettings> {
   try {
+    const [row] = await db.select().from(siteSettings).where(eq(siteSettings.id, "main")).limit(1);
+    if (row) return mergeSettings(row.data as Partial<BusinessSettings>);
+  } catch {
+    // Local builds can run without a database; the file remains a safe read fallback.
+  }
+
+  try {
     const raw = await fs.readFile(DATA_FILE, "utf-8");
-    const parsed = JSON.parse(raw) as Partial<BusinessSettings>;
-    return {
-      ...DEFAULT_SETTINGS,
-      ...parsed,
-      social: { ...DEFAULT_SETTINGS.social, ...parsed.social },
-    };
+    return mergeSettings(JSON.parse(raw) as Partial<BusinessSettings>);
   } catch {
     return DEFAULT_SETTINGS;
   }
 }
 
 export async function writeSettings(settings: BusinessSettings): Promise<void> {
-  await fs.mkdir(path.dirname(DATA_FILE), { recursive: true });
-  await fs.writeFile(DATA_FILE, JSON.stringify(settings, null, 2) + "\n");
+  await db.insert(siteSettings).values({ id: "main", data: settings }).onConflictDoUpdate({
+    target: siteSettings.id,
+    set: { data: settings, updatedAt: new Date() },
+  });
+  revalidatePath("/", "layout");
 }
 
 // Turns a Dutch mobile number as typically written ("06 44469920") into a
