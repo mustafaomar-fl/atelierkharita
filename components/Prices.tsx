@@ -32,7 +32,7 @@ export default async function Prices() {
                   </div>
                   <span className="mb-1 h-2.5 w-2.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
                 </div>
-                <ul className="divide-y divide-primary/10 px-6">
+                <ul className="px-6">
                   {category.items.map((service) => (
                     <li
                       key={service.id}
