@@ -13,16 +13,26 @@
   --color-primary-light: #445070;
   --color-accent: #c9a227;
   --color-accent-dark: #a3831f;
+  /* Warm ivory surface — replaces cool gray (neutral-50/white) as the base
+     for alternating sections, so navy/gold read as a considered warm
+     palette rather than sitting on a stark clinical white. */
+  --color-surface: #f8f4ea;
+  --color-surface-dark: #efe8d8;
 }
 
 @theme inline {
+  /* Two typefaces total: Alegreya for headings, Familjen Grotesk for
+     everything else. font-button is kept as a semantic utility name (so
+     button className stays self-documenting) but resolves to the same
+     sans as body text — a third typeface just for buttons wasn't earning
+     its place. */
   --font-heading: var(--font-alegreya), Georgia, serif;
   --font-body: var(--font-familjen), ui-sans-serif, system-ui, sans-serif;
-  --font-button: var(--font-sen), ui-sans-serif, system-ui, sans-serif;
+  --font-button: var(--font-familjen), ui-sans-serif, system-ui, sans-serif;
 }
 
 body {
-  background-color: #ffffff;
+  background-color: #fdfbf6;
   color: #171717;
   font-family: var(--font-body);
 }
@@ -32,4 +42,20 @@ h2,
 h3 {
   font-family: var(--font-heading);
   font-weight: 700;
+}
+
+/*
+ * Solid navy panels (CTA, footer, booking card). Not trying to decorate flat
+ * color with a pattern anymore — just a proper two-point light gradient so
+ * it reads as a lit surface. The real fix for "dry" was the hero using real
+ * photography instead of empty space; see Hero.tsx.
+ */
+.panel-navy {
+  background-image: radial-gradient(
+      ellipse 140% 100% at 100% 0%,
+      rgba(201, 162, 39, 0.18),
+      transparent 60%
+    ),
+    radial-gradient(ellipse 120% 90% at 0% 100%, rgba(255, 255, 255, 0.06), transparent 55%),
+    linear-gradient(to bottom right, var(--color-primary), var(--color-primary-dark));
 }

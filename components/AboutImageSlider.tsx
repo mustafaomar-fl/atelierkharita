@@ -30,7 +30,7 @@ export default function AboutImageSlider({
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="relative aspect-4/5 w-full overflow-hidden rounded-2xl shadow-lg">
+      <div className="relative aspect-4/5 w-full overflow-hidden rounded-lg border border-primary/10 shadow-lg">
         {images.map((src, i) => (
           <div
             key={i}
@@ -41,7 +41,7 @@ export default function AboutImageSlider({
           >
             <ImageWithFallback
               src={src}
-              alt=""
+              alt={i === 0 ? `${ownerName}, ${ownerRole}` : "Atelier Kharita tailoring workshop"}
               className="h-full w-full bg-neutral-200 object-cover"
             />
             {i === 0 && (
@@ -62,8 +62,8 @@ export default function AboutImageSlider({
                 aria-label={`Go to photo ${i + 1}`}
                 aria-current={i === index}
                 onClick={() => setIndex(i)}
-                className={`h-2 w-2 rounded-full transition-colors ${
-                  i === index ? "bg-accent" : "bg-white/50"
+                className={`h-2 rounded-full transition-all ${
+                  i === index ? "w-6 bg-accent" : "w-2 bg-white/50 hover:bg-white/80"
                 }`}
               />
             ))}
@@ -79,8 +79,10 @@ export default function AboutImageSlider({
             aria-label={`View photo ${i + 1}`}
             aria-current={i === index}
             onClick={() => setIndex(i)}
-            className={`overflow-hidden rounded-lg transition-all ${
-              i === index ? "ring-2 ring-accent ring-offset-2" : "opacity-80 hover:opacity-100"
+            className={`overflow-hidden rounded-lg border transition-all ${
+              i === index
+                ? "border-accent ring-2 ring-accent ring-offset-2"
+                : "border-primary/10 opacity-80 hover:scale-[1.03] hover:opacity-100"
             }`}
           >
             <ImageWithFallback

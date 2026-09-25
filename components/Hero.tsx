@@ -1,9 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useTranslations } from "next-intl";
 import { Link } from "@/i18n/navigation";
-import { ChevronIcon } from "./icons";
 
 type Slide = {
   subtitle: string;
@@ -11,130 +10,197 @@ type Slide = {
   afterImage: string;
 };
 
-type HeroImage = {
-  src: string;
-  label: string;
-  subtitle: string;
-};
-
-const AUTO_ROTATE_MS = 6000;
+function DragHandleIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth={2.2}>
+      <path d="M15 6l6 6-6 6M9 6l-6 6 6 6" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
 
 export default function Hero() {
   const t = useTranslations("hero");
   const slides = t.raw("slides") as Slide[];
 
-  const images: HeroImage[] = slides.flatMap((slide) => [
-    { src: slide.beforeImage, label: "Before", subtitle: slide.subtitle },
-    { src: slide.afterImage, label: "After", subtitle: slide.subtitle },
-  ]);
+  const [slideIndex, setSlideIndex] = useState(0);
+  const [position, setPosition] = useState(50);
+  const [dragging, setDragging] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const draggingRef = useRef(false);
 
-  const [index, setIndex] = useState(0);
+  const slide = slides[slideIndex];
 
-  const goNext = useCallback(() => {
-    setIndex((i) => (i + 1) % images.length);
-  }, [images.length]);
+  const updateFromClientX = useCallback((clientX: number) => {
+    const el = containerRef.current;
+    if (!el) return;
+    const rect = el.getBoundingClientRect();
+    const pct = ((clientX - rect.left) / rect.width) * 100;
+    setPosition(Math.min(100, Math.max(0, pct)));
+  }, []);
 
-  const goPrev = useCallback(() => {
-    setIndex((i) => (i - 1 + images.length) % images.length);
-  }, [images.length]);
+  // One deliberate hero-load moment: nudge the divider so it's obvious the
+  // photo is draggable, then settle back to center.
+  useEffect(() => {
+    const steps = [
+      setTimeout(() => setPosition(36), 600),
+      setTimeout(() => setPosition(64), 1300),
+      setTimeout(() => setPosition(50), 2000),
+    ];
+    return () => steps.forEach(clearTimeout);
+  }, []);
 
   useEffect(() => {
-    const id = setInterval(goNext, AUTO_ROTATE_MS);
-    return () => clearInterval(id);
-  }, [goNext]);
+    function handleMove(e: PointerEvent) {
+      if (!draggingRef.current) return;
+      updateFromClientX(e.clientX);
+    }
+    function handleUp() {
+      draggingRef.current = false;
+      setDragging(false);
+    }
+    window.addEventListener("pointermove", handleMove);
+    window.addEventListener("pointerup", handleUp);
+    return () => {
+      window.removeEventListener("pointermove", handleMove);
+      window.removeEventListener("pointerup", handleUp);
+    };
+  }, [updateFromClientX]);
 
-  const current = images[index];
+  function goToSlide(i: number) {
+    setSlideIndex(i);
+    setPosition(50);
+  }
 
   return (
-    <section
-      id="hero"
-      className="w-full px-4 py-12 sm:px-6 sm:py-16 lg:px-16 lg:py-20"
-    >
-      <div className="mx-auto flex max-w-6xl flex-col items-center gap-10 lg:flex-row lg:items-center lg:justify-between">
-        <div className="w-full max-w-lg rounded-2xl bg-primary p-6 shadow-lg sm:p-8">
-          <h1 className="font-heading text-3xl font-bold text-accent sm:text-4xl">
-            {t("title")}
-          </h1>
-          <p className="mt-4 font-body text-base text-white sm:text-lg">
-            {current?.subtitle}
-          </p>
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+    <section id="hero" className="panel-navy w-full overflow-hidden">
+      <div className="mx-auto flex max-w-6xl flex-col lg:min-h-[620px] lg:flex-row lg:items-stretch">
+        <div className="flex flex-col justify-center gap-7 px-6 py-16 sm:px-10 sm:py-20 lg:w-[42%] lg:px-12 lg:py-0">
+          <span className="h-0.5 w-10 bg-accent" aria-hidden="true" />
+          <div>
+            <h1 className="font-heading text-4xl font-bold text-accent sm:text-5xl">
+              {t("title")}
+            </h1>
+            <p className="mt-5 font-body text-base leading-relaxed text-white/90 sm:text-lg">
+              {slide?.subtitle}
+            </p>
+          </div>
+          <div className="flex flex-col gap-3 sm:flex-row">
             <Link
               href="/book"
-              className="rounded-full bg-accent px-6 py-3 text-center font-button text-sm font-normal text-primary/70 transition-colors hover:bg-accent-dark sm:text-base"
+              className="rounded-md bg-accent px-6 py-3 text-center font-button text-sm font-normal text-primary shadow-lg transition-colors hover:bg-accent-dark sm:text-base"
             >
               {t("bookButton")}
             </Link>
             <a
               href="#prices"
-              className="rounded-full border-2 border-white px-6 py-3 text-center font-button text-sm font-normal text-white transition-colors hover:bg-white hover:text-primary sm:text-base"
+              className="rounded-md border border-white/40 px-6 py-3 text-center font-button text-sm font-normal text-white transition-colors hover:border-white hover:bg-white/10 sm:text-base"
             >
               {t("pricesButton")}
             </a>
           </div>
         </div>
 
-        <div className="relative w-full sm:h-[500px] sm:w-[500px]">
-          <div className="relative aspect-square w-full overflow-hidden rounded-2xl shadow-xl sm:h-full">
-            {images.map((image, i) => (
-              <div
-                key={i}
-                aria-hidden={i !== index}
-                className={`absolute inset-0 transition-opacity duration-700 ${
-                  i === index ? "opacity-100" : "pointer-events-none opacity-0"
-                }`}
-              >
-                <img
-                  src={image.src}
-                  alt=""
-                  className="absolute inset-0 h-full w-full object-cover"
-                  onError={(e) => {
-                    e.currentTarget.style.visibility = "hidden";
-                  }}
-                />
-                <span className="absolute start-4 top-4 rounded bg-black/40 px-2 py-1 text-xs font-semibold tracking-wide text-white uppercase">
-                  {image.label}
-                </span>
-              </div>
-            ))}
+        <div className="flex w-full flex-col lg:w-[58%] lg:flex-row lg:items-stretch">
+          {/* Drag to compare before/after within the current example. */}
+          <div
+            ref={containerRef}
+            className="relative min-h-[380px] w-full flex-1 touch-none select-none border border-white/15 sm:min-h-[420px]"
+            onPointerDown={(e) => {
+              draggingRef.current = true;
+              setDragging(true);
+              updateFromClientX(e.clientX);
+            }}
+          >
+            <img
+              src={slide?.afterImage}
+              alt={slide ? `After: ${slide.subtitle}` : ""}
+              draggable={false}
+              className="absolute inset-0 h-full w-full object-cover"
+              onError={(e) => {
+                e.currentTarget.style.visibility = "hidden";
+              }}
+            />
+            <div
+              className="absolute inset-0 overflow-hidden"
+              style={{
+                clipPath: `polygon(0 0, ${position}% 0, ${position}% 100%, 0 100%)`,
+                transition: dragging ? "none" : "clip-path 700ms ease-out",
+              }}
+            >
+              <img
+                src={slide?.beforeImage}
+                alt={slide ? `Before: ${slide.subtitle}` : ""}
+                draggable={false}
+                className="absolute inset-0 h-full w-full object-cover"
+                onError={(e) => {
+                  e.currentTarget.style.visibility = "hidden";
+                }}
+              />
+            </div>
+
+            {/* Physically left/right, not start/end — the before/after
+                split is a fixed left-to-right convention regardless of page
+                direction, so these must not flip in RTL while the image
+                split stays put. */}
+            <span className="pointer-events-none absolute top-3 left-3 rounded bg-black/50 px-2 py-1 text-xs font-semibold tracking-wide text-white uppercase backdrop-blur-sm">
+              Before
+            </span>
+            <span className="pointer-events-none absolute top-3 right-3 rounded bg-black/50 px-2 py-1 text-xs font-semibold tracking-wide text-white uppercase backdrop-blur-sm">
+              After
+            </span>
+
+            <div
+              className="pointer-events-none absolute inset-y-0 w-0.5 bg-white/80"
+              style={{ left: `${position}%`, transition: dragging ? "none" : "left 700ms ease-out" }}
+            />
+            <div
+              className="pointer-events-none absolute top-1/2 flex h-10 w-10 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full bg-white text-primary shadow-lg"
+              style={{ left: `${position}%`, transition: dragging ? "none" : "left 700ms ease-out" }}
+            >
+              <DragHandleIcon />
+            </div>
+
+            <input
+              type="range"
+              min={0}
+              max={100}
+              value={Math.round(position)}
+              onChange={(e) => setPosition(Number(e.target.value))}
+              aria-label="Drag to compare before and after"
+              className="sr-only"
+            />
           </div>
 
-          {images.length > 1 && (
-            <>
-              <button
-                type="button"
-                aria-label="Previous image"
-                onClick={goPrev}
-                className="absolute start-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/30 text-white transition-colors hover:bg-black/50"
-              >
-                <ChevronIcon />
-              </button>
-              <button
-                type="button"
-                aria-label="Next image"
-                onClick={goNext}
-                className="absolute end-3 top-1/2 z-10 flex h-9 w-9 -translate-y-1/2 items-center justify-center rounded-full bg-black/30 text-white transition-colors hover:bg-black/50"
-              >
-                <span className="rotate-180">
-                  <ChevronIcon />
-                </span>
-              </button>
-
-              <div className="absolute inset-x-0 bottom-3 z-10 flex justify-center gap-2">
-                {images.map((_, i) => (
-                  <button
-                    key={i}
-                    type="button"
-                    aria-label={`Go to image ${i + 1}`}
-                    aria-current={i === index}
-                    onClick={() => setIndex(i)}
-                    className={`h-2 w-2 rounded-full transition-colors ${
-                      i === index ? "bg-accent" : "bg-white/50"
-                    }`}
+          {/* Pick which repair example to compare — real thumbnails, not
+              abstract dots, so each example is visible on its own. Below
+              the main photo on narrow screens; a column beside it at lg,
+              using the width that would otherwise sit empty. */}
+          {slides.length > 1 && (
+            <div className="grid shrink-0 grid-cols-3 gap-2 pt-2 lg:h-auto lg:w-28 lg:grid-cols-1 lg:grid-rows-3 lg:gap-2 lg:pt-0 lg:ps-2">
+              {slides.map((s, i) => (
+                <button
+                  key={i}
+                  type="button"
+                  aria-label={`Example ${i + 1}`}
+                  aria-current={i === slideIndex}
+                  onClick={() => goToSlide(i)}
+                  className={`relative h-16 w-full overflow-hidden border transition-all sm:h-20 lg:h-full ${
+                    i === slideIndex
+                      ? "border-accent opacity-100"
+                      : "border-white/15 opacity-50 hover:opacity-80"
+                  }`}
+                >
+                  <img
+                    src={s.afterImage}
+                    alt=""
+                    className="absolute inset-0 h-full w-full object-cover"
+                    onError={(e) => {
+                      e.currentTarget.style.visibility = "hidden";
+                    }}
                   />
-                ))}
-              </div>
-            </>
+                </button>
+              ))}
+            </div>
           )}
         </div>
       </div>

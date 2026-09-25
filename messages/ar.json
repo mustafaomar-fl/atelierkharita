@@ -5,18 +5,13 @@
     "logoAlt": "شعار أتيليه خاريتا"
   },
   "meta": {
-    "title": "أتيليه خريطة ملابسك تدوم أطول",
+    "title": "أتيليه خريطة",
     "description": "خياطة وتعديلات ملابس في بيفرفايك إصلاحات احترافية للبناطيل والسترات والفساتين والستائر. احجز موعدك عبر الإنترنت."
   },
   "footer": {
     "tagline": "ملابسك تدوم أطول",
-    "phone": "06 44469920",
-    "kvk": "KVK nr. 42073008",
-    "location1": "Bazaar Beverwijk, Hal 25",
-    "location2": "Watermuntstraat 76, 1531 TR Wormer",
     "hoursNote": "حاليًا مفتوح فقط في عطلة نهاية الأسبوع (السبت والأحد)",
     "findUsHeading": "أين يمكنك إيجاد محلنا",
-    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d145.35212767923716!2d4.672177435415498!3d52.478225596660856!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2snl!4v1788442440639!5m2!1sen!2snl",
     "images": [
       "/images/footer/footer1.jpg",
       "/images/footer/footer2.jpg",
@@ -29,23 +24,24 @@
     "pricesButton": "الخدمات والأسعار تبدأ من",
     "slides": [
       {
-        "subtitle": "تعديلات احترافية لكل قطعة ملابس",
+        "subtitle": "سحاب مكسور، حاشية ممزقة، سترة لم تعد تناسبك كما كانت من قبل. يتخلص معظم الناس من مثل هذه القطع ويشترون شيئا جديدا، لكن خياطا ماهرا يستطيع إنقاذ كل شيء تقريبا. أحضرها إلينا ودع خمسة وثلاثين عاما من خبرة الخياطة تجعلها قابلة للارتداء مرة أخرى، بجزء بسيط من تكلفة الاستبدال.",
         "beforeImage": "/images/hero/slide1-before.jpg",
         "afterImage": "/images/hero/slide1-after.jpg"
       },
       {
-        "subtitle": "امنح قطعك المفضلة حياة جديدة",
+        "subtitle": "تلك القطعة المفضلة الجالسة دون ارتداء في خزانتك لا يجب أن تنتهي منسية في درج أو تُرمى نهائيا. ربما تغير المقاس، أو انفكت درزة، أو ربما تحتاج فقط إلى تعديل بسيط لتشعر بأنها مناسبة مرة أخرى. أحضرها إلى أتيليه خريطة وسنقوم بإصلاحها وتعديلها ومنحها حياة جديدة سترتديها بالفعل.",
         "beforeImage": "/images/hero/slide2-before.jpg",
         "afterImage": "/images/hero/slide2-after.jpg"
       },
       {
-        "subtitle": "خياطة دقيقة، بإتقان",
+        "subtitle": "كل غرزة تحمل خمسة وثلاثين عاما من خبرة الخياطة، من ورشة عمل في سوريا إلى جلسات قياس في جميع أنحاء هولندا، بما في ذلك التعاون مع أسماء مثل دي بينكورف أمستردام. وتلك الدقة والاهتمام بالتفاصيل نفسها تدخل في كل حاشية وكل درزة وكل لمسة نهائية نقدمها اليوم، مهما كان حجم العمل كبيرا أو صغيرا.",
         "beforeImage": "/images/hero/slide3-before.jpg",
         "afterImage": "/images/hero/slide3-after.jpg"
       }
     ]
   },
   "testimonialsTitle": "ماذا يقول عملاؤنا",
+  "testimonialsPoweredByGoogle": "التقييمات عبر جوجل",
   "testimonials": [
     {
       "name": "[أضف اسم عميل حقيقي]",
@@ -82,12 +78,7 @@
       "/images/about/shop1.jpg",
       "/images/about/shop2.jpg",
       "/images/about/shop3.jpg"
-    ],
-    "social": {
-      "instagram": "https://www.instagram.com/atelierkharita?igsi=MTN1OGt3aW91MGVzbw==",
-      "facebook": "#",
-      "whatsapp": "https://wa.me/qr/MGIHOBNWRV7WM1"
-    }
+    ]
   },
   "services": [
     {

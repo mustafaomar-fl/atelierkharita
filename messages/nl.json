@@ -5,18 +5,13 @@
     "logoAlt": "Atelier Kharita logo"
   },
   "meta": {
-    "title": "Atelier Kharita — Kleding gaat langer mee",
+    "title": "Atelier Kharita",
     "description": "Kleermakerij en verstelservice in Beverwijk — vakkundige reparaties voor broeken, jassen, jurken en gordijnen. Boek online een afspraak."
   },
   "footer": {
     "tagline": "Kleding gaat langer mee",
-    "phone": "06 44469920",
-    "kvk": "KVK nr. 42073008",
-    "location1": "Bazaar Beverwijk, Hal 25",
-    "location2": "Watermuntstraat 76, 1531 TR Wormer",
     "hoursNote": "Momenteel alleen open in het weekend (za–zo)",
     "findUsHeading": "Waar vindt u onze winkel",
-    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d145.35212767923716!2d4.672177435415498!3d52.478225596660856!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2snl!4v1788442440639!5m2!1sen!2snl",
     "images": [
       "/images/footer/footer1.jpg",
       "/images/footer/footer2.jpg",
@@ -29,23 +24,24 @@
     "pricesButton": "Bekijk diensten en prijzen",
     "slides": [
       {
-        "subtitle": "Vakkundige verstelservice voor elk kledingstuk",
+        "subtitle": "Een kapotte rits, een gescheurde zoom, een jasje dat niet meer past zoals vroeger. De meeste mensen gooien zulke kledingstukken weg en kopen iets nieuws, maar een goede kleermaker kan bijna alles redden. Breng het naar ons en laat vijfendertig jaar kleermakerservaring het weer draagbaar maken, voor een fractie van de kosten van vervanging.",
         "beforeImage": "/images/hero/slide1-before.jpg",
         "afterImage": "/images/hero/slide1-after.jpg"
       },
       {
-        "subtitle": "Geef uw favoriete kledingstukken een tweede leven",
+        "subtitle": "Dat favoriete kledingstuk dat ongedragen in uw kast hangt, hoeft niet vergeten te raken in een la of definitief weggegooid te worden. Misschien is de pasvorm veranderd, is een naad losgeraakt, of heeft het gewoon een kleine aanpassing nodig om weer goed te voelen. Breng het naar Atelier Kharita en wij herstellen het, passen het aan, en geven het een tweede leven dat u daadwerkelijk zult dragen.",
         "beforeImage": "/images/hero/slide2-before.jpg",
         "afterImage": "/images/hero/slide2-after.jpg"
       },
       {
-        "subtitle": "Precisiewerk, vakkundig gedaan",
+        "subtitle": "Elke steek draagt vijfendertig jaar kleermakerservaring met zich mee, van een werkplaats in Syrië tot pasbeurten in heel Nederland, waaronder samenwerkingen met namen als De Bijenkorf Amsterdam. Diezelfde precisie en aandacht voor detail zit in elke zoom, elke naad en elke afwerking die wij vandaag leveren, hoe groot of klein de klus ook is.",
         "beforeImage": "/images/hero/slide3-before.jpg",
         "afterImage": "/images/hero/slide3-after.jpg"
       }
     ]
   },
   "testimonialsTitle": "Wat klanten zeggen",
+  "testimonialsPoweredByGoogle": "Beoordelingen via Google",
   "testimonials": [
     {
       "name": "[Voeg echte klantnaam toe]",
@@ -82,12 +78,7 @@
       "/images/about/shop1.jpg",
       "/images/about/shop2.jpg",
       "/images/about/shop3.jpg"
-    ],
-    "social": {
-      "instagram": "https://www.instagram.com/atelierkharita?igsi=MTN1OGt3aW91MGVzbw==",
-      "facebook": "#",
-      "whatsapp": "https://wa.me/qr/MGIHOBNWRV7WM1"
-    }
+    ]
   },
   "services": [
     {

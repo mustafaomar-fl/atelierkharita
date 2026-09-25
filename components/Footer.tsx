@@ -1,17 +1,19 @@
 import { getTranslations } from "next-intl/server";
 import { Link } from "@/i18n/navigation";
 import { extractMapEmbedSrc } from "@/lib/mapEmbed";
+import { mapsSearchHref, readSettings, toTelHref } from "@/lib/settings";
 import FooterImageSlider from "./FooterImageSlider";
 import ImageWithFallback from "./ImageWithFallback";
 
 export default async function Footer() {
   const t = await getTranslations("footer");
-  const mapEmbedSrc = extractMapEmbedSrc(t("mapEmbedUrl"));
+  const settings = await readSettings();
+  const mapEmbedSrc = extractMapEmbedSrc(settings.mapEmbedUrl);
 
   return (
-    <footer className="bg-primary text-white">
-      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-12 sm:px-6 md:grid-cols-3">
-        <div className="flex flex-col gap-2">
+    <footer className="panel-navy border-t border-accent/40 text-white">
+      <div className="mx-auto grid max-w-6xl gap-10 px-4 py-16 sm:px-6 md:grid-cols-3">
+        <div className="flex flex-col gap-2.5">
           <Link href="/" className="flex items-center gap-2">
             <ImageWithFallback
               src="/images/logo.png"
@@ -22,10 +24,35 @@ export default async function Footer() {
             <span className="font-heading text-2xl font-bold">Atelier Kharita</span>
           </Link>
           <p className="font-body text-white/80">{t("tagline")}</p>
-          <p className="font-body text-white/80">{t("phone")}</p>
-          {t("kvk") && <p className="font-body text-white/80">{t("kvk")}</p>}
-          <p className="font-body text-white/80">{t("location1")}</p>
-           <p className="font-body text-white/80">{t("location2")}</p>
+          {settings.phone && (
+            <a
+              href={toTelHref(settings.phone)}
+              className="font-body text-white/80 underline-offset-2 transition-colors hover:text-accent hover:underline"
+            >
+              {settings.phone}
+            </a>
+          )}
+          {settings.kvk && <p className="font-body text-white/80">{settings.kvk}</p>}
+          {settings.location1 && (
+            <a
+              href={mapsSearchHref(settings.location1)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-body text-white/80 underline-offset-2 transition-colors hover:text-accent hover:underline"
+            >
+              {settings.location1}
+            </a>
+          )}
+          {settings.location2 && (
+            <a
+              href={mapsSearchHref(settings.location2)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="font-body text-white/80 underline-offset-2 transition-colors hover:text-accent hover:underline"
+            >
+              {settings.location2}
+            </a>
+          )}
           <p className="font-body text-white/80">{t("hoursNote")}</p>
         </div>
 
