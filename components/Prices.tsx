@@ -19,38 +19,48 @@ export default async function Prices() {
         </div>
         <div className="grid gap-8 sm:grid-cols-2">
           {categories.map((category) => (
-            <div key={category.category} className="flex flex-col gap-4">
-              <div className="overflow-hidden rounded-lg border border-primary/10 bg-white shadow-sm">
-                <div className="flex items-center gap-4 px-5 py-4">
-                  <h3 className="font-heading text-base font-semibold whitespace-nowrap text-primary">
-                    {category.category}
-                  </h3>
-                  <span className="h-px flex-1 bg-accent/50" aria-hidden="true" />
+            <article key={category.category} className="group flex flex-col gap-5">
+              <div className="overflow-hidden rounded-2xl border border-primary/10 bg-paper shadow-[0_12px_40px_rgba(22,33,62,0.07)] transition-transform duration-300 group-hover:-translate-y-1">
+                <div className="panel-navy flex items-end justify-between gap-4 px-6 py-5">
+                  <div>
+                    <span className="mb-1 block font-body text-[11px] font-semibold uppercase tracking-[0.22em] text-accent">
+                      {t("prices.title")}
+                    </span>
+                    <h3 className="font-heading text-2xl font-bold text-paper">
+                      {category.category}
+                    </h3>
+                  </div>
+                  <span className="mb-1 h-2.5 w-2.5 shrink-0 rounded-full bg-accent" aria-hidden="true" />
                 </div>
-                <ul className="divide-y divide-primary/8 px-5">
+                <ul className="divide-y divide-primary/10 px-6">
                   {category.items.map((service) => (
-                    <li key={service.id} className="flex items-baseline gap-3 py-3.5">
-                      <span className="font-body text-sm text-neutral-700">{service.item}</span>
+                    <li
+                      key={service.id}
+                      className="flex items-baseline gap-3 py-4 transition-colors first:pt-5 last:pb-5 hover:bg-surface"
+                    >
+                      <span className="font-body text-sm text-ink">{service.item}</span>
                       <span
                         className="flex-1 border-b border-dotted border-primary/20"
                         aria-hidden="true"
                       />
-                      <span className="font-body text-sm font-semibold whitespace-nowrap text-accent-dark">
+                      <span className="rounded-full bg-surface-dark px-2.5 py-1 font-body text-sm font-semibold whitespace-nowrap text-accent-dark">
                         &euro;{service.price}
                         {service.priceUnit !== "flat" ? ` ${service.priceUnit}` : ""}
                       </span>
                     </li>
                   ))}
                 </ul>
-                <div className="h-2" />
               </div>
               <Link
                 href={{ pathname: "/book", query: { service: slugifyCategory(category.category) } }}
-                className="self-start rounded-md border border-primary px-4 py-2 font-button text-sm font-normal text-primary transition-colors hover:bg-primary hover:text-white"
+                className="inline-flex w-fit items-center gap-3 rounded-full bg-primary px-5 py-3 font-button text-sm font-semibold text-paper shadow-[0_8px_20px_rgba(22,33,62,0.16)] transition-all hover:-translate-y-0.5 hover:bg-primary-dark hover:shadow-[0_12px_24px_rgba(22,33,62,0.22)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent"
               >
                 {bookService}
+                <span className="text-lg leading-none text-accent" aria-hidden="true">
+                  &rarr;
+                </span>
               </Link>
-            </div>
+            </article>
           ))}
         </div>
       </div>
