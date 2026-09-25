@@ -13,6 +13,8 @@
   --color-primary-light: #445070;
   --color-accent: #c9a227;
   --color-accent-dark: #a3831f;
+  --color-ink: #171717;
+  --color-paper: #fdfbf6;
   /* Warm ivory surface — replaces cool gray (neutral-50/white) as the base
      for alternating sections, so navy/gold read as a considered warm
      palette rather than sitting on a stark clinical white. */
@@ -32,8 +34,8 @@
 }
 
 body {
-  background-color: #fdfbf6;
-  color: #171717;
+  background-color: var(--color-paper);
+  color: var(--color-ink);
   font-family: var(--font-body);
 }
 

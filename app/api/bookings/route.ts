@@ -1,9 +1,9 @@
 import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
-import { mutateBookings, type BookingRecord } from "@/lib/bookings";
+import { createBooking, type BookingRecord } from "@/lib/bookings";
 
-const OWNER_EMAIL = "atelierkharita@gmail.com";
+const OWNER_EMAIL = process.env.BOOKING_NOTIFY_EMAIL || "atelierkharita@gmail.com";
 
 type BookingPayload = {
   name: string;
@@ -15,17 +15,14 @@ type BookingPayload = {
   locale: string;
 };
 
-function appendBooking(record: BookingRecord): Promise<void> {
-  return mutateBookings((bookings) => {
-    bookings.push(record);
-  });
-}
+async function sendOwnerNotification(record: BookingRecord, saveError?: unknown) {
+  const smtpHost = process.env.EMAIL_SMTP_HOST?.trim();
+  const smtpPort = process.env.EMAIL_SMTP_PORT?.trim();
+  const smtpUser = process.env.EMAIL_SMTP_USER?.trim();
+  const smtpPass = process.env.EMAIL_SMTP_PASS?.trim();
+  const emailFrom = process.env.EMAIL_FROM?.trim();
 
-async function sendOwnerNotification(record: BookingRecord) {
-  const { EMAIL_SMTP_HOST, EMAIL_SMTP_PORT, EMAIL_SMTP_USER, EMAIL_SMTP_PASS, EMAIL_FROM } =
-    process.env;
-
-  if (!EMAIL_SMTP_HOST || !EMAIL_SMTP_USER || !EMAIL_SMTP_PASS) {
+  if (!smtpHost || !smtpUser || !smtpPass) {
     console.warn(
       "[bookings] SMTP is not configured (see .env.example) — skipping owner notification email."
     );
@@ -33,10 +30,10 @@ async function sendOwnerNotification(record: BookingRecord) {
   }
 
   const transporter = nodemailer.createTransport({
-    host: EMAIL_SMTP_HOST,
-    port: Number(EMAIL_SMTP_PORT ?? 587),
-    secure: Number(EMAIL_SMTP_PORT) === 465,
-    auth: { user: EMAIL_SMTP_USER, pass: EMAIL_SMTP_PASS },
+    host: smtpHost,
+    port: Number(smtpPort ?? 587),
+    secure: Number(smtpPort) === 465,
+    auth: { user: smtpUser, pass: smtpPass },
   });
 
   const lines = [
@@ -49,10 +46,11 @@ async function sendOwnerNotification(record: BookingRecord) {
     `Description: ${record.description || "-"}`,
     `Locale: ${record.locale}`,
     `Submitted at: ${record.createdAt}`,
+    ...(saveError ? [`Database save error: ${saveError instanceof Error ? saveError.message : String(saveError)}`] : []),
   ];
 
   await transporter.sendMail({
-    from: EMAIL_FROM || EMAIL_SMTP_USER,
+    from: emailFrom || smtpUser,
     to: OWNER_EMAIL,
     subject: `New booking from ${record.name}`,
     text: lines.join("\n"),
@@ -85,7 +83,19 @@ export async function POST(request: Request) {
     locale: body.locale || "en",
   };
 
-  await appendBooking(record);
+  try {
+    await createBooking(record);
+  } catch (error) {
+    console.error("[bookings] Failed to save booking:", error);
+
+    try {
+      await sendOwnerNotification(record, error);
+    } catch (emailError) {
+      console.error("[bookings] Failed to send booking failure notification:", emailError);
+    }
+
+    return NextResponse.json({ error: "booking_save_failed" }, { status: 500 });
+  }
 
   try {
     await sendOwnerNotification(record);

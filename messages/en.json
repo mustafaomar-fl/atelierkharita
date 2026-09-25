@@ -178,8 +178,9 @@
     "button": "Book fixing session"
   },
   "booking": {
-    "heading": "Book a Session",
-    "nameLabel": "Name",
+  "heading": "Book a Session",
+  "repairTagline": "A considered repair.",
+  "nameLabel": "Name",
     "phoneLabel": "Phone number",
     "dropOffLabel": "Drop-off time",
     "locationsLabel": "Drop-off locations",

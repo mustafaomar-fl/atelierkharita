@@ -1,7 +1,11 @@
 import { promises as fs } from "fs";
 import path from "path";
+import { eq } from "drizzle-orm";
+import { revalidatePath } from "next/cache";
 import { NextResponse } from "next/server";
 import { isAdminRequest } from "@/lib/adminAuth";
+import { db } from "@/lib/db";
+import { siteContent } from "@/lib/db/schema";
 
 const LOCALES = ["en", "nl", "ar"] as const;
 
@@ -44,8 +48,10 @@ export async function PATCH(request: Request) {
   let found = false;
 
   for (const locale of LOCALES) {
-    const filePath = messagesPath(locale);
-    const raw = await fs.readFile(filePath, "utf-8");
+    const [stored] = await db.select().from(siteContent).where(eq(siteContent.locale, locale)).limit(1);
+    const raw = stored
+      ? JSON.stringify(stored.content)
+      : await fs.readFile(messagesPath(locale), "utf-8");
     const data = JSON.parse(raw) as { services?: Service[] };
     const service = data.services?.find((s) => s.id === id);
     if (!service) continue;
@@ -53,12 +59,16 @@ export async function PATCH(request: Request) {
     found = true;
     service.price = price;
     service.priceUnit = priceUnit.trim();
-    await fs.writeFile(filePath, JSON.stringify(data, null, 2) + "\n");
+    await db.insert(siteContent).values({ locale, content: data }).onConflictDoUpdate({
+      target: siteContent.locale,
+      set: { content: data, updatedAt: new Date() },
+    });
   }
 
   if (!found) {
     return NextResponse.json({ error: "service_not_found" }, { status: 404 });
   }
 
+  revalidatePath("/", "layout");
   return NextResponse.json({ ok: true });
 }

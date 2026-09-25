@@ -28,8 +28,8 @@ const initialState: FormState = {
 };
 
 function inputClass(hasError: boolean) {
-  return `w-full rounded-lg border bg-neutral-50 px-3.5 py-2.5 font-body text-sm text-neutral-800 transition-colors focus:bg-white focus:outline-none focus:ring-2 focus:ring-primary/15 ${
-    hasError ? "border-red-400" : "border-neutral-200 focus:border-primary"
+  return `w-full rounded-xl border bg-paper/95 px-4 py-3 font-body text-sm text-ink shadow-sm transition-all placeholder:text-primary-light/65 focus:-translate-y-0.5 focus:bg-paper focus:outline-none focus:ring-4 focus:ring-accent/15 ${
+    hasError ? "border-red-400" : "border-primary/15 focus:border-accent"
   }`;
 }
 
@@ -55,17 +55,19 @@ function CheckboxCard({
   checked,
   onChange,
   children,
+  checkedTextClass = "text-neutral-700/80",
 }: {
   checked: boolean;
   onChange: () => void;
   children: ReactNode;
+  checkedTextClass?: string;
 }) {
   return (
     <label
-      className={`flex cursor-pointer items-start gap-3 rounded-lg border p-3 font-body text-sm transition-all ${
+      className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3.5 font-body text-sm transition-all ${
         checked
-          ? "border-primary bg-primary/5 shadow-sm"
-          : "border-neutral-200 bg-white hover:border-neutral-300 hover:shadow-sm"
+          ? "border-accent bg-accent/10 shadow-sm"
+          : "border-primary/10 bg-paper/95 hover:border-accent/60 hover:bg-white hover:shadow-sm"
       }`}
     >
       <span
@@ -93,7 +95,7 @@ function CheckboxCard({
           </svg>
         )}
       </span>
-      <span className="text-neutral-700/80">{children}</span>
+      <span className={checked ? checkedTextClass : "text-neutral-700/80"}>{children}</span>
     </label>
   );
 }
@@ -246,12 +248,36 @@ export default function BookingForm({
 
   return (
     <div className="bg-white px-4 py-20 sm:px-6 sm:py-24">
-      <div className="mx-auto max-w-2xl">
-        <span className="mb-4 block h-0.5 w-10 bg-accent" aria-hidden="true" />
-        <h1 className="mb-8 font-heading text-3xl font-bold text-primary">{t("heading")}</h1>
+      <div className="mx-auto max-w-5xl">
+        <div className="mb-10 max-w-2xl">
+          <span className="mb-4 block h-1 w-12 rounded-full bg-accent" aria-hidden="true" />
+          <p className="mb-3 font-body text-xs font-semibold uppercase tracking-[0.2em] text-primary-light">
+            Atelier Kharita · Booking
+          </p>
+          <h1 className="font-heading text-4xl font-bold leading-tight text-primary sm:text-5xl">
+            {t("heading")}
+          </h1>
+        </div>
 
-        <div className="panel-navy rounded-lg p-6 shadow-md sm:p-10">
-          <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-7">
+        <div className="panel-navy overflow-hidden rounded-2xl shadow-xl shadow-primary/15">
+          <div className="grid lg:grid-cols-[0.72fr_1.28fr]">
+            <aside className="flex flex-col justify-between border-b border-white/10 p-6 sm:p-8 lg:border-b-0 lg:border-r lg:p-10">
+              <div>
+                <p className="font-heading text-2xl text-accent">{t("repairTagline")}</p>
+              </div>
+              <div className="mt-10 rounded-xl border border-accent/25 bg-primary-dark/30 p-4">
+                <span className="mb-2 flex items-center gap-2 font-body text-xs font-semibold uppercase tracking-[0.14em] text-accent">
+                  <LocationIcon className="h-4 w-4 shrink-0" />
+                  {t("locationsLabel")}
+                </span>
+                <ul className="flex flex-col gap-1 font-body text-sm leading-6 text-paper/75">
+                  {location1 && <li>{location1}</li>}
+                  {location2 && <li>{location2}</li>}
+                </ul>
+              </div>
+            </aside>
+
+            <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-7 bg-white/5 p-6 sm:p-10">
             <div className="grid gap-6 sm:grid-cols-2">
               <Field label={t("nameLabel")} error={errors.name}>
                 <input
@@ -270,17 +296,6 @@ export default function BookingForm({
                   className={inputClass(!!errors.phone)}
                 />
               </Field>
-            </div>
-
-            <div className="rounded-lg border border-accent/30 bg-white/5 p-4">
-              <span className="mb-2 flex items-center gap-1.5 font-body text-sm font-semibold text-accent">
-                <LocationIcon className="h-4 w-4 shrink-0 text-accent" />
-                {t("locationsLabel")}
-              </span>
-              <ul className="flex flex-col gap-1 font-body text-sm text-accent/80">
-                {location1 && <li>{location1}</li>}
-                {location2 && <li>{location2}</li>}
-              </ul>
             </div>
 
             <Field label={t("dropOffLabel")} error={errors.dropOffTime}>
@@ -302,6 +317,7 @@ export default function BookingForm({
                     key={service.id}
                     checked={form.services.includes(service.id)}
                     onChange={() => toggleService(service.id)}
+                    checkedTextClass="text-paper/90"
                   >
                     {service.category} — {service.item} (from &euro;{service.price}
                     {service.priceUnit !== "flat" ? ` ${service.priceUnit}` : ""})
@@ -347,6 +363,7 @@ export default function BookingForm({
               {t("confirmButton")}
             </button>
           </form>
+          </div>
         </div>
       </div>
     </div>

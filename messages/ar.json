@@ -178,8 +178,9 @@
     "button": "احجز موعد الإصلاح"
   },
   "booking": {
-    "heading": "احجز موعدًا",
-    "nameLabel": "الاسم",
+  "heading": "احجز موعدًا",
+  "repairTagline": "إصلاح مدروس.",
+  "nameLabel": "الاسم",
     "phoneLabel": "رقم الهاتف",
     "dropOffLabel": "وقت التسليم",
     "locationsLabel": "مواقع التسليم",
