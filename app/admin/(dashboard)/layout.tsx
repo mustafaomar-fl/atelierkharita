@@ -8,6 +8,7 @@ const NAV_ITEMS = [
   { href: "/admin/prices", label: "الأسعار" },
   { href: "/admin/images", label: "الصور" },
   { href: "/admin/content", label: "النصوص والبيانات الوصفية" },
+  { href: "/admin/business", label: "بيانات النشاط" },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {

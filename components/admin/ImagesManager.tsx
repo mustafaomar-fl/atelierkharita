@@ -47,8 +47,8 @@ function SlotCard({ slot }: { slot: ImageSlot }) {
   }
 
   return (
-    <div className="flex flex-col gap-2 rounded-xl border border-neutral-200 bg-white p-3 shadow-sm">
-      <div className="flex aspect-square w-full items-center justify-center overflow-hidden rounded-lg bg-neutral-100">
+    <div className="flex flex-col gap-2 rounded-xl border border-neutral-200 bg-white p-3 shadow-sm transition-shadow hover:shadow-md">
+      <div className="group flex aspect-square w-full items-center justify-center overflow-hidden rounded-lg bg-neutral-100">
         {broken ? (
           <span className="px-2 text-center text-xs text-neutral-400">لا توجد صورة بعد</span>
         ) : (
@@ -56,7 +56,7 @@ function SlotCard({ slot }: { slot: ImageSlot }) {
           <img
             src={`/${slot.path}?v=${version}`}
             alt=""
-            className="h-full w-full object-cover"
+            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
             onError={() => setBroken(true)}
           />
         )}

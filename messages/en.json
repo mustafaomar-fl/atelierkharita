@@ -5,18 +5,13 @@
     "logoAlt": "Atelier Kharita logo"
   },
   "meta": {
-    "title": "Atelier Kharita — Clothes live longer",
+    "title": "Atelier Kharita",
     "description": "Tailoring and alterations in Beverwijk — expert repairs for trousers, jackets, dresses and curtains. Book your appointment online."
   },
   "footer": {
     "tagline": "Clothes live longer",
-    "phone": "06 44469920",
-    "kvk": "KVK nr. 42073008",
-    "location1": "Bazaar Beverwijk, Hal 25",
-    "location2": "Watermuntstraat 76, 1531 TR Wormer",
     "hoursNote": "Currently open weekends only (Sat–Sun)",
     "findUsHeading": "Where to find our shop",
-    "mapEmbedUrl": "https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d145.35212767923716!2d4.672177435415498!3d52.478225596660856!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e1!3m2!1sen!2snl!4v1788442440639!5m2!1sen!2snl",
     "images": [
       "/images/footer/footer1.jpg",
       "/images/footer/footer2.jpg",
@@ -29,23 +24,24 @@
     "pricesButton": "Check services and prices",
     "slides": [
       {
-        "subtitle": "Expert alterations for every garment",
+        "subtitle": "A broken zipper, a torn hem, a jacket that no longer fits the way it used to. Most people throw these pieces away and buy something new, but a good tailor can save almost anything. Bring it to us and let thirty five years of tailoring experience make it wearable again, at a fraction of the cost of replacing it.",
         "beforeImage": "/images/hero/slide1-before.jpg",
         "afterImage": "/images/hero/slide1-after.jpg"
       },
       {
-        "subtitle": "Give your favorite pieces a second life",
+        "subtitle": "That favorite piece sitting unworn in your closet does not have to end up forgotten in a drawer or thrown away for good. Maybe the fit changed, maybe a seam gave way, maybe it just needs a small adjustment to feel right again. Bring it to Atelier Kharita and we will repair it, adjust it, and give it a second life you will actually wear.",
         "beforeImage": "/images/hero/slide2-before.jpg",
         "afterImage": "/images/hero/slide2-after.jpg"
       },
       {
-        "subtitle": "Precision tailoring, done right",
+        "subtitle": "Every stitch carries thirty five years of tailoring experience, from a workshop in Syria to fittings across the Netherlands, including work with names like De Bijenkorf Amsterdam. That same precision and attention to detail goes into every hem, every seam, and every finish we deliver today, no matter how big or small the job.",
         "beforeImage": "/images/hero/slide3-before.jpg",
         "afterImage": "/images/hero/slide3-after.jpg"
       }
     ]
   },
   "testimonialsTitle": "What Our Customers Say",
+  "testimonialsPoweredByGoogle": "Reviews via Google",
   "testimonials": [
     {
       "name": "[Add real customer name]",
@@ -82,12 +78,7 @@
       "/images/about/shop1.jpg",
       "/images/about/shop2.jpg",
       "/images/about/shop3.jpg"
-    ],
-    "social": {
-      "instagram": "https://www.instagram.com/atelierkharita?igsi=MTN1OGt3aW91MGVzbw==",
-      "facebook": "#",
-      "whatsapp": "https://wa.me/qr/MGIHOBNWRV7WM1"
-    }
+    ]
   },
   "services": [
     {

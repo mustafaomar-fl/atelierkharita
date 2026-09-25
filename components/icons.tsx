@@ -60,6 +60,14 @@ export function FacebookIcon() {
   );
 }
 
+export function TikTokIcon() {
+  return (
+    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">
+      <path d="M16.6 3c.4 2 1.7 3.5 3.9 3.8v2.9c-1.4.1-2.7-.3-3.9-1.1v6.5a5.7 5.7 0 1 1-4.9-5.6v3a2.7 2.7 0 1 0 1.9 2.6V3h3z" />
+    </svg>
+  );
+}
+
 export function WhatsAppIcon() {
   return (
     <svg viewBox="0 0 24 24" className="h-5 w-5" fill="currentColor">

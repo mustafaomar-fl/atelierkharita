@@ -24,3 +24,16 @@ export function extractMapEmbedSrc(input: string): string | null {
   }
   return null;
 }
+
+// Google's embed src encodes the pinned coordinates in its `pb` param as
+// `!2d<longitude>!3d<latitude>`. Pulling them out lets the LocalBusiness
+// structured data include a real geo location instead of just an address
+// string, without needing a separate geocoding step.
+export function extractLatLngFromEmbedSrc(embedSrc: string): { lat: number; lng: number } | null {
+  const match = embedSrc.match(/!2d(-?\d+(?:\.\d+)?)!3d(-?\d+(?:\.\d+)?)/);
+  if (!match) return null;
+  const lng = Number(match[1]);
+  const lat = Number(match[2]);
+  if (!Number.isFinite(lat) || !Number.isFinite(lng)) return null;
+  return { lat, lng };
+}

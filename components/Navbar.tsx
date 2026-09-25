@@ -11,7 +11,7 @@ export default function Navbar() {
   const [open, setOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 bg-primary text-white">
+    <header className="sticky top-0 z-50 bg-primary/95 text-white shadow-sm backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-4 py-3 sm:px-6">
         <Link
           href="/"
@@ -42,7 +42,7 @@ export default function Navbar() {
         <div className="hidden md:block">
           <Link
             href="/book"
-            className="rounded-full bg-accent px-5 py-2 font-button text-sm font-normal text-primary/70 transition-colors hover:bg-accent-dark"
+            className="rounded-md bg-accent px-5 py-2 font-button text-sm font-normal text-primary transition-colors hover:bg-accent-dark"
           >
             {t("bookSession")}
           </Link>
@@ -51,7 +51,7 @@ export default function Navbar() {
         <div className="flex items-center gap-3 md:hidden">
           <Link
             href="/book"
-            className="rounded-full bg-accent px-4 py-1.5 font-button text-sm font-normal text-primary/70 transition-colors hover:bg-accent-dark"
+            className="rounded-md bg-accent px-4 py-1.5 font-button text-sm font-normal text-primary transition-colors hover:bg-accent-dark"
           >
             {t("bookSession")}
           </Link>

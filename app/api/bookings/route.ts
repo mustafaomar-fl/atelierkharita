@@ -1,7 +1,7 @@
 import { randomUUID } from "crypto";
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
-import { createBooking, type BookingRecord } from "@/lib/bookings";
+import { mutateBookings, type BookingRecord } from "@/lib/bookings";
 
 const OWNER_EMAIL = "atelierkharita@gmail.com";
 
@@ -14,6 +14,12 @@ type BookingPayload = {
   termsAccepted: boolean;
   locale: string;
 };
+
+function appendBooking(record: BookingRecord): Promise<void> {
+  return mutateBookings((bookings) => {
+    bookings.push(record);
+  });
+}
 
 async function sendOwnerNotification(record: BookingRecord) {
   const { EMAIL_SMTP_HOST, EMAIL_SMTP_PORT, EMAIL_SMTP_USER, EMAIL_SMTP_PASS, EMAIL_FROM } =
@@ -79,7 +85,7 @@ export async function POST(request: Request) {
     locale: body.locale || "en",
   };
 
-  await createBooking(record);
+  await appendBooking(record);
 
   try {
     await sendOwnerNotification(record);
