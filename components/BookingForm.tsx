@@ -55,10 +55,12 @@ function CheckboxCard({
   checked,
   onChange,
   children,
+  checkedTextClass = "text-neutral-700/80",
 }: {
   checked: boolean;
   onChange: () => void;
   children: ReactNode;
+  checkedTextClass?: string;
 }) {
   return (
     <label
@@ -93,7 +95,7 @@ function CheckboxCard({
           </svg>
         )}
       </span>
-      <span className="text-neutral-700/80">{children}</span>
+      <span className={checked ? checkedTextClass : "text-neutral-700/80"}>{children}</span>
     </label>
   );
 }
@@ -315,6 +317,7 @@ export default function BookingForm({
                     key={service.id}
                     checked={form.services.includes(service.id)}
                     onChange={() => toggleService(service.id)}
+                    checkedTextClass="text-paper/90"
                   >
                     {service.category} — {service.item} (from &euro;{service.price}
                     {service.priceUnit !== "flat" ? ` ${service.priceUnit}` : ""})
